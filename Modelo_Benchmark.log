@@ -26,7 +26,7 @@ EIGENVALUES:
             0.95             0.95                0
           0.9635           0.9635                0
             1.05             1.05                0
-             Inf              Inf                0
+       4.612e+18       -4.612e+18                0
 
 There are 2 eigenvalue(s) larger than 1 in modulus for 2 forward-looking variable(s)
 The rank condition is verified.
@@ -103,4 +103,8 @@ r                 0.6994   0.4175   0.1900   0.0158  -0.0728
 w                 0.7540   0.5006   0.2765   0.1003  -0.0013
 i                 0.7065   0.4266   0.1966   0.0224  -0.0668
 productividad     0.7540   0.5006   0.2765   0.1003  -0.0013
-Total computing time : 0h00m02s
+MATLAB has experienced a low-level graphics error, and may not have drawn correctly.
+Read about what you can do to prevent this issue at <a href="matlab:opengl('problems')">Resolving Low-Level Graphics Issues</a> then restart MATLAB.
+To share details of this issue with MathWorks technical support,
+please include <a href="file:C:\Users\matei\AppData\Local\Temp\jogl.ex.8936">this file</a> with your service request.
+Total computing time : 0h00m04s
