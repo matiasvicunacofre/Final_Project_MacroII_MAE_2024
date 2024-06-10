@@ -49,19 +49,8 @@ shocks;
     var e_z; stderr sigma_e;
 end;
 
-initval;
-    y = log(1);
-    c = log(0.8);
-    k = log(10);
-    w = log(1);
-    i = log(0.2);
-    r = log(0.04);
-    z = 0;
-    h = log(1/3);
-end;
-
 steady;
 
 check;
 
-stoch_simul(order=1, periods=100000, irf=20, hp_filter = 1600) y c i k h productividad;
+stoch_simul(order=1, periods=200, irf=20, hp_filter = 1600) y c i k h productividad;

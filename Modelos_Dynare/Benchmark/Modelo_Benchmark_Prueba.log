@@ -1,0 +1,98 @@
+Starting Dynare (version 6.1).
+Calling Dynare with arguments: none
+Starting preprocessing of the model file ... 
+Found 9 equation(s). 
+Evaluating expressions... 
+Computing static model derivatives (order 1). 
+Normalizing the static model... 
+Finding the optimal block decomposition of the static model... 
+4 block(s) found: 
+  3 recursive block(s) and 1 simultaneous block(s). 
+  the largest simultaneous block has 6 equation(s) 
+                                 and 6 feedback variable(s). 
+Computing dynamic model derivatives (order 1). 
+Normalizing the dynamic model... 
+Finding the optimal block decomposition of the dynamic model... 
+4 block(s) found: 
+  3 recursive block(s) and 1 simultaneous block(s). 
+  the largest simultaneous block has 6 equation(s) 
+                                 and 6 feedback variable(s). 
+Preprocessing completed. 
+Preprocessing time: 0h00m00s.
+title_string =
+    'Modelo de Hansen-Wright con Trabajo Divisible'
+
+STEADY-STATE RESULTS:
+
+c             		 0.169995
+k             		 2.79412
+h             		 -0.843178
+y             		 0.466251
+z             		 0
+r             		 0.035101
+w             		 0.863142
+i             		 -0.894755
+productividad 		 1.30943
+
+EIGENVALUES:
+         Modulus             Real        Imaginary
+          0.9418           0.9418                0
+            0.95             0.95                0
+           1.073            1.073                0
+             Inf              Inf                0
+
+There are 2 eigenvalue(s) larger than 1 in modulus for 2 forward-looking variable(s)
+The rank condition is verified.
+
+
+MODEL SUMMARY
+
+  Number of variables:         9
+  Number of stochastic shocks: 1
+  Number of state variables:   2
+  Number of jumpers:           2
+  Number of static variables:  5
+
+
+MATRIX OF COVARIANCE OF EXOGENOUS SHOCKS
+Variables         e_z
+e_z          0.000049
+
+POLICY AND TRANSITION FUNCTIONS
+                                   y               c               i               k               h   productividad
+Constant                    0.466251        0.169995       -0.894755        2.794125       -0.843178        1.309430
+k(-1)                       0.054955        0.531588       -1.327334        0.941817       -0.476633        0.531587
+z(-1)                       1.844648        0.446761        5.898676        0.147467        1.397887        0.446760
+e_z                         1.941734        0.470274        6.209133        0.155228        1.471460        0.470274
+
+
+MOMENTS OF SIMULATED VARIABLES (HP filter, lambda = 1600)
+VARIABLE                   MEAN       STD. DEV.        VARIANCE        SKEWNESS        KURTOSIS
+y                      0.465955        0.017756        0.000315        0.009884        0.007565
+c                      0.169722        0.005153        0.000027        0.004790       -0.007005
+i                     -0.895116        0.056741        0.003219        0.010287        0.014225
+k                      2.793737        0.004924        0.000024        0.000239        0.021297
+h                     -0.843201        0.013518        0.000183        0.010297        0.016829
+productividad          1.309157        0.005153        0.000027        0.004790       -0.007005
+
+
+CORRELATION OF SIMULATED VARIABLES (HP filter, lambda = 1600)
+VARIABLE                     y              c              i              k              h  productividad
+y                       1.0000         0.8695         0.9915         0.3544         0.9821         0.8695
+c                       0.8695         1.0000         0.7978         0.7701         0.7609         1.0000
+i                       0.9915         0.7978         1.0000         0.2297         0.9983         0.7978
+k                       0.3544         0.7701         0.2297         1.0000         0.1720         0.7701
+h                       0.9821         0.7609         0.9983         0.1720         1.0000         0.7609
+productividad           0.8695         1.0000         0.7978         0.7701         0.7609         1.0000
+
+
+AUTOCORRELATION OF SIMULATED VARIABLES (HP filter, lambda = 1600)
+VARIABLE               1        2        3        4        5
+y                 0.7171   0.4750   0.2728   0.1099  -0.0156
+c                 0.8207   0.6391   0.4635   0.3012   0.1570
+i                 0.7071   0.4592   0.2544   0.0914  -0.0322
+k                 0.9578   0.8559   0.7156   0.5540   0.3851
+h                 0.7054   0.4565   0.2512   0.0883  -0.0351
+productividad     0.8207   0.6391   0.4635   0.3012   0.1570
+Total computing time : 0h00m15s
+Note: warning(s) encountered in MATLAB/Octave code
