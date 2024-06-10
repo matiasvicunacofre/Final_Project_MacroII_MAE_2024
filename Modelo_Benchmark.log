@@ -1,5 +1,0 @@
-Starting Dynare (version 6.1).
-Calling Dynare with arguments: none
-Starting preprocessing of the model file ... 
-ERROR: Modelo_Benchmark.mod: line 48, col 21: syntax error, unexpected '(' 
-Preprocessing time: 0h00m00s.
