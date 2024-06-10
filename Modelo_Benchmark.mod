@@ -19,10 +19,10 @@ model;
     exp(c)^(-1) = beta*exp(c(+1))^(-1)*(r(+1) + (1-delta));
     
     // Oferta_de_Trabajo
-    (1-theta)*exp(y/h) = A/exp(1 - h)*exp(c);
+    (1-theta)*exp(y)/exp(h) = A/exp(1 - h)*exp(c);
 
     // Producto_marginal_capital
-    r = theta*(exp(y)/exp(k(-1)));
+    r = theta*exp(y)/exp(k(-1));
 
     // Shock_de_produccion
     z = rho*z(-1) + e_z;
@@ -37,11 +37,23 @@ model;
     exp(k) = (1 - delta) * exp(k(-1)) + exp(i);
 
     // Salario
-    exp(w) = (1-theta)*exp(y/h);
+    exp(w) = (1-theta)*exp(y)/exp(h);
     
     // Productividad
-    productividad = exp(y/h);
+    productividad = exp(y)/exp(h);
 
+end;
+
+steady_state_model;
+z = 1;
+h = (1+(A/(1-theta))(1 - (beta*delta*theta)/(1-beta(1-delta))))^(-1); 
+k = h*((1/beta -(1-delta))/(theta*z))^(1/(theta-1));
+i = delta*k;
+y = z*k^(theta)*h^(1-theta);
+c = y-delta*k;
+r =  1/beta - (1-delta);
+w = (1-theta)*exp(y)/exp(h);
+productividad = exp(y)/exp(h);
 end;
 
 shocks;
@@ -51,4 +63,4 @@ end;
 check;
 steady;
 
-stoch_simul(order = 1, irf = 20, hp_filter = 1600, periods = 200);
+stoch_simul(order = 1, irf = 20, hp_filter = 1600, periods = 200)y c i k h productividad;
