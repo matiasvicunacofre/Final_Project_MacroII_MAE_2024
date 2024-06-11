@@ -78,4 +78,4 @@ check;
 steady;
 
 // Calculo_Simulacion_Estocastica_(Opciones)
-stoch_simul(hp_filter = 1600, order = 1,irf=20, periods = 200);
+stoch_simul(hp_filter = 1600, order = 1,irf=20, periods = 200, simul_replic = 10000);
