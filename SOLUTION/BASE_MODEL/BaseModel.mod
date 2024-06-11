@@ -140,14 +140,16 @@ for jj = 1:options_.simul_replic
 end
 
 % Tabla 1: Estadísticas de las Variables
-fprintf('\n%-40s \n',"Estadísticas de las Variables");
+fprintf('\n%-40s \n',"ESTADÍSTICAS DE LAS VARIABLES");
+fprintf('----------------------------------------------------- \n');
 fprintf('%-20s \t %11s \t %11s \n','','std(x)','corr(y,x)')
 for ii=1:size(corr_mat,1)
     fprintf('%-20s \t %3.2f (%3.2f) \t %3.2f (%3.2f) \n',var_names{ii,:},mean(std_mat(ii,:,:),3),std(std_mat(ii,:,:),0,3),mean(corr_mat(ii,:),2),std(corr_mat(ii,:),0,2))
 end
+fprintf('----------------------------------------------------- \n');
 
 % Tabla 2: Desviaciones Relativas Variables
-fprintf('\n%-40s \n','Desviaciones Relativas');
+fprintf('\n%-40s \n','DESVIACIONES RELATIVAS');
 fprintf('------------------------- \n');
 fprintf('std(c)/std(y) \t %3.2f \n', mean(stats_model(1,:),"all"));
 fprintf('std(I)/std(y) \t %3.2f \n', mean(stats_model(2,:),'all'));
