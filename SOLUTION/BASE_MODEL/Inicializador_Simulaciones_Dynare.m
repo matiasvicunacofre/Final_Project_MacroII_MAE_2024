@@ -1,4 +1,4 @@
-%% Inicializador de Modelos en Dynare
+%% Inicializador de Modelo Base
 % Autores: Matías Espinoza, Kevin Alvarez, Matías Vicuña
 % Macroeconomía II - Magíster en Economía
 % Universidad Alberto Hurtado
