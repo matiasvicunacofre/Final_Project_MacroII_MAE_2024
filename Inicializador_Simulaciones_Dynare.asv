@@ -49,8 +49,7 @@ std_mat = std(simulated_series_filtered(var_positions,:,:),0,2)*100;
 % Almacenamos todos los resultados
 corr_mat = zeros(9,options_.simul_replic);
 stats_model = zeros(6,options_.simul_replic);
-
-% Calculo Correlaciones
+% Correlaciones
 for ii=1:options_.simul_replic
    corr_mat(1,ii)=corr(results(y_pos,:,ii)',results(y_pos,:,ii)');
    corr_mat(2,ii)=corr(results(y_pos,:,ii)',results(c_pos,:,ii)');
@@ -63,7 +62,18 @@ for ii=1:options_.simul_replic
    corr_mat(9,ii)=corr(results(y_pos,:,ii)',results(z_pos,:,ii)');
 end
 
-% Calculo Desviaciones Relativas
+% Tabla 1: Estadísticas de las Variables
+fprintf('\n%-40s \n',"Estadísticas de las Variables");
+fprintf('%-20s \t %11s \t %11s \n','','std(x)','corr(y,x)')
+for ii=1:size(corr_mat,1)
+    fprintf('%-20s \t %3.2f (%3.2f) \t %3.2f (%3.2f) \n',var_names{ii,:},mean(std_mat(ii,:,:),3),std(std_mat(ii,:,:),0,3),mean(corr_mat(ii,:),2),std(corr_mat(ii,:),0,2))
+end
+
+%% Generamos el Loop de las desviaciones relativas
+
+% Almacenamos todos los resultados
+stats_model = zeros(6,options_.simul_replic);
+
 for jj = 1:options_.simul_replic
     stats_model(1,jj) = std_mat(c_pos,:,jj)/std_mat(y_pos,:,jj);
     stats_model(2,jj) = std_mat(I_pos,:,jj)/std_mat(y_pos,:,jj);
@@ -73,17 +83,10 @@ for jj = 1:options_.simul_replic
     stats_model(6,jj) = corr(results(c_pos,:,jj)',results(y_pos,:,jj)');
 end
 
-% Tabla 1: Estadísticas de las Variables
-fprintf('\n%-40s \n',"Estadísticas de las Variables");
-fprintf('%-20s \t %11s \t %11s \n','','std(x)','corr(y,x)')
-for ii=1:size(corr_mat,1)
-    fprintf('%-20s \t %3.2f (%3.2f) \t %3.2f (%3.2f) \n',var_names{ii,:},mean(std_mat(ii,:,:),3),std(std_mat(ii,:,:),0,3),mean(corr_mat(ii,:),2),std(corr_mat(ii,:),0,2))
-end
-
 % Tabla 2: Desviaciones Relativas Variables
 fprintf('\n%-40s \n','Desviaciones Relativas');
 fprintf('------------------------- \n');
-fprintf('std(c)/std(y) \t %3.2f \n', mean(stats_model(1,:),"all"));
+fprintf('std(c)/std(y) \t %3.2f \n', mean(stats_model(1,:),'all'));
 fprintf('std(I)/std(y) \t %3.2f \n', mean(stats_model(2,:),'all'));
 fprintf('std(h)/std(y) \t %3.2f \n', mean(stats_model(3,:),'all'));
 fprintf('std(w)/std(y) \t %3.2f \n', mean(stats_model(4,:),'all'));
