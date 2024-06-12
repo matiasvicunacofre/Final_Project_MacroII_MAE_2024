@@ -17,4 +17,4 @@ dynare BaseModel.mod;
 clearvars; close all; clc;
 
 % Comenzamos definiendo el espacio de los modelo de dynare (.mod)
-dynare BaseModel.mod;
+dynare Hansen_1985.mod;

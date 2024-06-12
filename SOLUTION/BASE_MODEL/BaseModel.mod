@@ -21,6 +21,7 @@ delta = 0.025;
 rho = 0.95;
 sigmae = 0.007;
 A=2;
+
 // Valores de Estado estacionario
 zss=1;
 hss = (1+(A/(1-theta))*(1 - (beta*delta*theta)/(1-beta*(1-delta))))^(-1); 
@@ -71,16 +72,21 @@ shocks;
 var e = sigmae^2;
 end;
 
+// Comprueba Condición de Blanchard-Khan
 check;
+
 // Calcular ESTADO_ESTACIONARIO
 steady;
 
 // Calculo_Simulacion_Estocastica_(Opciones)
 stoch_simul(hp_filter = 1600, order = 1,irf=20, periods = 200, simul_replic = 10000);
 
-%Recolecto todos los resultados del Dynare usando
+% Recolecto todos los resultados del Dynare
 % Recopilamos los resultados
 results = get_simul_replications(M_,options_);
+
+% Determinamos el N° de Simulaciones a descartar
+N = 500;
 
 % Aplicando el Filtro de Hodrick - Prescott
 simulated_series_filtered = NaN(size(results));
@@ -91,33 +97,33 @@ end
 
 % Sacamos la Posición de las Variables
 y_pos=strmatch('y',M_.endo_names,'exact');
-c_pos=strmatch('c',M_.endo_names,'exact');
-k_pos=strmatch('k',M_.endo_names,'exact');
-h_pos=strmatch('h',M_.endo_names,'exact');
-prod_pos=strmatch('prod',M_.endo_names,'exact');
 I_pos = strmatch('I',M_.endo_names,'exact');
-r_pos = strmatch('r',M_.endo_names,'exact');
-w_pos = strmatch('w',M_.endo_names,'exact');
+k_pos=strmatch('k',M_.endo_names,'exact');
 z_pos = strmatch('z',M_.endo_names,'exact');
+c_pos=strmatch('c',M_.endo_names,'exact');
+h_pos=strmatch('h',M_.endo_names,'exact');
+w_pos = strmatch('w',M_.endo_names,'exact');
+r_pos = strmatch('r',M_.endo_names,'exact');
+prod_pos=strmatch('prod',M_.endo_names,'exact');
 
 %% Estadísticas Descriptivas de las Variables
 %  Desviación y Correlación Promedio - 10.000 Simulaciones
 
 % Definimos las posiciones de las variables
-var_positions = [y_pos; c_pos; k_pos; h_pos; prod_pos; I_pos; r_pos; w_pos; z_pos];
+var_positions = [y_pos; I_pos; k_pos; z_pos; c_pos; h_pos; w_pos; r_pos; prod_pos];
 
 % Nombres de las Variables
 var_names = M_.endo_names_long(var_positions,:);
 
 % Calculamos la Desviación Estándar
-std_mat = std(simulated_series_filtered(var_positions,:,:),0,2)*100;
+std_mat = std(simulated_series_filtered(var_positions,:,N+1:end),0,2)*100;
 
 % Almacenamos todos los resultados
-corr_mat = zeros(9,options_.simul_replic);
-stats_model = zeros(6,options_.simul_replic);
+corr_mat = zeros(9,options_.simul_replic - N);
+stats_model = zeros(6,options_.simul_replic - N);
 
 % Calculo Correlaciones
-for ii=1:options_.simul_replic
+for ii=1:options_.simul_replic - N
    corr_mat(1,ii)=corr(results(y_pos,:,ii)',results(y_pos,:,ii)');
    corr_mat(2,ii)=corr(results(y_pos,:,ii)',results(c_pos,:,ii)');
    corr_mat(3,ii)=corr(results(y_pos,:,ii)',results(I_pos,:,ii)');
@@ -130,7 +136,7 @@ for ii=1:options_.simul_replic
 end
 
 % Calculo Desviaciones Relativas
-for jj = 1:options_.simul_replic
+for jj = 1:options_.simul_replic - N
     stats_model(1,jj) = std_mat(c_pos,:,jj)/std_mat(y_pos,:,jj);
     stats_model(2,jj) = std_mat(I_pos,:,jj)/std_mat(y_pos,:,jj);
     stats_model(3,jj) = std_mat(h_pos,:,jj)/std_mat(y_pos,:,jj);
@@ -140,7 +146,9 @@ for jj = 1:options_.simul_replic
 end
 
 % Tabla 1: Estadísticas de las Variables
-fprintf('\n%-40s \n',"ESTADÍSTICAS DE LAS VARIABLES");
+fprintf('\n');
+fprintf('----------------------------------------------------- \n');
+fprintf('%-40s \n',"ESTADÍSTICAS DE LAS VARIABLES*");
 fprintf('----------------------------------------------------- \n');
 fprintf('%-20s \t %11s \t %11s \n','','std(x)','corr(y,x)')
 for ii=1:size(corr_mat,1)
@@ -149,12 +157,21 @@ end
 fprintf('----------------------------------------------------- \n');
 
 % Tabla 2: Desviaciones Relativas Variables
-fprintf('\n%-40s \n','DESVIACIONES RELATIVAS');
+fprintf('\n');
 fprintf('------------------------- \n');
-fprintf('std(c)/std(y) \t %3.2f \n', mean(stats_model(1,:),"all"));
+fprintf('%-40s \n','DESVIACIONES RELATIVAS*');
+fprintf('------------------------- \n');
+fprintf('std(c)/std(y) \t %3.2f \n', mean(stats_model(1,:),'all'));
 fprintf('std(I)/std(y) \t %3.2f \n', mean(stats_model(2,:),'all'));
 fprintf('std(h)/std(y) \t %3.2f \n', mean(stats_model(3,:),'all'));
 fprintf('std(w)/std(y) \t %3.2f \n', mean(stats_model(4,:),'all'));
 fprintf('std(h)/std(w) \t %3.2f \n', mean(stats_model(5,:),'all'));
 fprintf('corr(h,w)     \t %3.2f \n', mean(stats_model(6,:),'all'));
 fprintf('------------------------- \n');
+
+fprintf('\n');
+fprintf('%-40s \n','* Nota:');
+fprintf('----------------------------------------------------- \n');
+fprintf('- N° de Simulaciones consideradas: %d de %d \n',options_.simul_replic-N,options_.simul_replic);
+fprintf('- N° de Periodos: %d\n', options_.periods);
+fprintf('----------------------------------------------------- \n');
