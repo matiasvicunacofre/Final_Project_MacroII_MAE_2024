@@ -1,36 +1,38 @@
 //////////////////////////////////////////////////////////////////////////
 // Authors : Kevin Alvarez - Matias Espinoza - Matias Vicuña
-// Magíster en Economía : Econometría II - Modelo Base Hansen and 
-// Wright (1992) - Replicación 1 - Final Project
+// Magíster en Economía : Macroeconomía II - Modelo Base Hansen and 
+// Wright (1992) - Replicación 2 - Final Project
 //////////////////////////////////////////////////////////////////////////
 
-// Modelo bajo Planificador central
+// Modelo bajo Trabajo Indivisible
 
 // Variables endogenas
-var y I k z c h w r prod;
+var y I k lambda c h w r prod;
 
 // Variables exogenas
-varexo e;
+varexo e_lambda;
 
 // Parametros
-parameters theta beta rho sigmae delta A zss yss css Iss kss hss rss wss prodss;
+parameters theta beta gamma sigma_e delta A B lambdass yss css Iss kss hss rss wss prodss;
 // Valores parametros
-theta = 0.36;
 beta = 0.99;
+theta = 0.36;
 delta = 0.025;
-rho = 0.95;
-sigmae = 0.007;
-A=2;
+gamma = 0.95;
+sigma_e = 0.007;
+h_0 = 0.53;
+A = 2;
 
 // Valores de Estado estacionario
-zss=1;
-hss = (1+(A/(1-theta))*(1 - (beta*delta*theta)/(1-beta*(1-delta))))^(-1); 
-kss = hss*((1/beta -(1-delta))/(theta*zss))^(1/(theta-1));
-Iss = delta*kss;
-yss = zss*kss^(theta)*hss^(1-theta);
-css = yss-delta*kss;
-rss =  1/beta - (1-delta);
-wss = (1-theta)*(yss/hss);
+B = -A*(log(1-h_0))/h_0;
+lambdass = 1;
+hss = (1-theta)/(B*(1-((delta*beta*theta)/((1-beta)*(1-delta)))));
+kss = ((theta*beta)/(1-(1-delta)*beta))^(1/(1-theta))*hss;
+yss = lambda*kss^theta * hss^(1-theta);
+css = ((1-theta)*yss)/(B*hss);
+Iss = yss - css;
+rss =  theta*kss^(theta-1) * hss^(1-theta);
+wss = (1-theta)*kss^theta * hss^(-theta);
 prodss = yss/hss;
 
 
@@ -40,9 +42,9 @@ exp(c)^(-1) = beta*(exp(c(+1))^(-1)*(exp(r(+1)) + 1-delta));
 // Restricción de recursos
 exp(k) = exp(y) + (1-delta)*exp(k(-1))- exp(c);
 // oferta de trabajo
-(1-theta)*exp(y)/exp(h)=A/(1-exp(h))*exp(c);
+(1-theta)*exp(y)/exp(h)=B*exp(c);
 // Función de producción
-exp(y)=exp(z)*exp(k(-1))^(theta)*exp(h)^(1-theta);
+exp(y)=exp(lambda)*exp(k(-1))^(theta)*exp(h)^(1-theta);
 // Salarios reales
 exp(w)=(1-theta)*(exp(y)/exp(h));
 // Renta real
@@ -52,7 +54,7 @@ exp(I)=exp(y)-exp(c);
 // Productividad
 exp(prod)= exp(y)/exp(h);
 // Shock Lineal
- z = rho*z(-1) + e;
+lambda = gamma*lambda(-1) + e_lambda;
 end;
 
 // Dynare Soluciona
@@ -61,15 +63,15 @@ k = log(kss);
 y = log(yss);
 c = log(css);
 I = log(Iss);
-h =log(hss);
-r= log(rss);
-w= log(wss);
-z = log(zss);
-prod=log(prodss);
+h = log(hss);
+r = log(rss);
+w = log(wss);
+lambda = log(lambdass);
+prod = log(prodss);
 end;
 
 shocks;
-var e = sigmae^2;
+var e_lambda = sigma_e^2; // efecto 0.049
 end;
 
 // Comprueba Condición de Blanchard-Khan
@@ -99,7 +101,7 @@ end
 y_pos=strmatch('y',M_.endo_names,'exact');
 I_pos = strmatch('I',M_.endo_names,'exact');
 k_pos=strmatch('k',M_.endo_names,'exact');
-z_pos = strmatch('z',M_.endo_names,'exact');
+lambda_pos = strmatch('lambda',M_.endo_names,'exact');
 c_pos=strmatch('c',M_.endo_names,'exact');
 h_pos=strmatch('h',M_.endo_names,'exact');
 w_pos = strmatch('w',M_.endo_names,'exact');
@@ -110,7 +112,7 @@ prod_pos=strmatch('prod',M_.endo_names,'exact');
 %  Desviación y Correlación Promedio - 10.000 Simulaciones
 
 % Definimos las posiciones de las variables
-var_positions = [y_pos; I_pos; k_pos; z_pos; c_pos; h_pos; w_pos; r_pos; prod_pos];
+var_positions = [y_pos; I_pos; k_pos; lambda_pos; c_pos; h_pos; w_pos; r_pos; prod_pos];
 
 % Nombres de las Variables
 var_names = M_.endo_names_long(var_positions,:);
@@ -132,7 +134,7 @@ for ii=1:options_.simul_replic - N
    corr_mat(6,ii)=corr(results(y_pos,:,ii)',results(prod_pos,:,ii)');
    corr_mat(7,ii)=corr(results(y_pos,:,ii)',results(r_pos,:,ii)');
    corr_mat(8,ii)=corr(results(y_pos,:,ii)',results(w_pos,:,ii)');
-   corr_mat(9,ii)=corr(results(y_pos,:,ii)',results(z_pos,:,ii)');
+   corr_mat(9,ii)=corr(results(y_pos,:,ii)',results(lambda_pos,:,ii)');
 end
 
 % Calculo Desviaciones Relativas

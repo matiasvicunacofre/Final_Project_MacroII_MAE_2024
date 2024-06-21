@@ -1,0 +1,138 @@
+Starting Dynare (version 6.1).
+Calling Dynare with arguments: none
+Starting preprocessing of the model file ... 
+Found 9 equation(s). 
+Evaluating expressions... 
+Computing static model derivatives (order 1). 
+Normalizing the static model... 
+Finding the optimal block decomposition of the static model... 
+5 block(s) found: 
+  4 recursive block(s) and 1 simultaneous block(s). 
+  the largest simultaneous block has 5 equation(s) 
+                                 and 5 feedback variable(s). 
+Computing dynamic model derivatives (order 1). 
+Normalizing the dynamic model... 
+Finding the optimal block decomposition of the dynamic model... 
+5 block(s) found: 
+  4 recursive block(s) and 1 simultaneous block(s). 
+  the largest simultaneous block has 5 equation(s) 
+                                 and 5 feedback variable(s). 
+Preprocessing completed. 
+Preprocessing time: 0h00m00s.
+dynare_solve: starting value results in nonfinite/NaN value. Randomize initial guess...
+
+EIGENVALUES:
+         Modulus             Real        Imaginary
+          0.9418           0.9418                0
+            0.95             0.95                0
+           1.073            1.073                0
+        9.55e+15        -9.55e+15                0
+
+There are 2 eigenvalue(s) larger than 1 in modulus for 2 forward-looking variable(s)
+The rank condition is verified.
+
+dynare_solve: starting value results in nonfinite/NaN value. Randomize initial guess...
+
+STEADY-STATE RESULTS:
+
+y      		 0.112382
+I      		 -1.24862
+k      		 2.44026
+lambda 		 0
+c      		 -0.183874
+h      		 -1.19705
+w      		 0.863144
+r      		 -3.34953
+prod   		 1.30943
+
+MODEL SUMMARY
+
+  Number of variables:         9
+  Number of stochastic shocks: 1
+  Number of state variables:   2
+  Number of jumpers:           2
+  Number of static variables:  5
+
+
+MATRIX OF COVARIANCE OF EXOGENOUS SHOCKS
+Variables    e_lambda
+e_lambda     0.000049
+
+POLICY AND TRANSITION FUNCTIONS
+                                   y               I               k          lambda               c               h               w               r            prod
+Constant                    0.112382       -1.248618        2.440256               0       -0.183874       -1.197049        0.863144       -3.349525        1.309431
+k(-1)                       0.054955       -1.327327        0.941817               0        0.531588       -0.476633        0.531588       -0.945045        0.531588
+lambda(-1)                  1.844642        5.898624        0.147467        0.950000        0.446760        1.397883        0.446760        1.844642        0.446760
+e_lambda                    1.941729        6.209078        0.155228        1.000000        0.470273        1.471455        0.470273        1.941729        0.470273
+
+
+MOMENTS OF SIMULATED VARIABLES (HP filter, lambda = 1600)
+VARIABLE              MEAN       STD. DEV.        VARIANCE        SKEWNESS        KURTOSIS
+y                 0.086312        0.016619        0.000276       -0.074842        0.088911
+I                -1.280638        0.052752        0.002783       -0.098505        0.160998
+k                 2.406150        0.004311        0.000019        0.104132       -0.859367
+lambda           -0.012459        0.008545        0.000073       -0.077533        0.097711
+c                -0.207891        0.004804        0.000023        0.004332       -0.281301
+h                -1.199101        0.012519        0.000157       -0.109556        0.190831
+w                 0.839127        0.004804        0.000023        0.004332       -0.281301
+r                -3.341436        0.016642        0.000277       -0.125805        0.230273
+prod              1.285414        0.004804        0.000023        0.004332       -0.281301
+
+
+CORRELATION OF SIMULATED VARIABLES (HP filter, lambda = 1600)
+VARIABLE         y       I       k  lambda       c       h       w       r    prod
+y           1.0000  0.9929  0.4189  0.9999  0.8928  0.9849  0.8928  0.9680  0.8928
+I           0.9929  1.0000  0.3079  0.9944  0.8328  0.9985  0.8328  0.9910  0.8328
+k           0.4189  0.3079  1.0000  0.4063  0.7831  0.2557  0.7831  0.1777  0.7831
+lambda      0.9999  0.9944  0.4063  1.0000  0.8865  0.9872  0.8865  0.9714  0.8865
+c           0.8928  0.8328  0.7831  0.8865  1.0000  0.8014  1.0000  0.7512  1.0000
+h           0.9849  0.9985  0.2557  0.9872  0.8014  1.0000  0.8014  0.9968  0.8014
+w           0.8928  0.8328  0.7831  0.8865  1.0000  0.8014  1.0000  0.7512  1.0000
+r           0.9680  0.9910  0.1777  0.9714  0.7512  0.9968  0.7512  1.0000  0.7512
+prod        0.8928  0.8328  0.7831  0.8865  1.0000  0.8014  1.0000  0.7512  1.0000
+
+
+AUTOCORRELATION OF SIMULATED VARIABLES (HP filter, lambda = 1600)
+VARIABLE          1        2        3        4        5
+y            0.7062   0.3864   0.1344  -0.0020  -0.0605
+I            0.6966   0.3687   0.1117  -0.0249  -0.0791
+k            0.9394   0.8155   0.6569   0.4870   0.3162
+lambda       0.7047   0.3837   0.1309  -0.0054  -0.0632
+c            0.8025   0.5612   0.3487   0.2017   0.0992
+h            0.6948   0.3652   0.1068  -0.0303  -0.0837
+w            0.8025   0.5612   0.3487   0.2017   0.0992
+r            0.6950   0.3652   0.1059  -0.0324  -0.0859
+prod         0.8025   0.5612   0.3487   0.2017   0.0992
+
+----------------------------------------------------- 
+ESTADÍSTICAS DE LAS VARIABLES*           
+----------------------------------------------------- 
+                     	      std(x) 	   corr(y,x) 
+y                    	 1.74 (0.17) 	 1.00 (0.00) 
+I                    	 5.58 (0.53) 	 0.85 (0.04) 
+k                    	 0.48 (0.08) 	 0.93 (0.02) 
+lambda               	 0.90 (0.09) 	 0.69 (0.09) 
+c                    	 0.50 (0.06) 	 0.83 (0.05) 
+h                    	 1.33 (0.13) 	 0.85 (0.04) 
+w                    	 0.50 (0.06) 	 0.60 (0.14) 
+r                    	 1.78 (0.17) 	 0.85 (0.04) 
+prod                 	 0.50 (0.06) 	 1.00 (0.00) 
+----------------------------------------------------- 
+
+------------------------- 
+DESVIACIONES RELATIVAS*                  
+------------------------- 
+std(c)/std(y) 	 0.29 
+std(I)/std(y) 	 3.20 
+std(h)/std(y) 	 0.76 
+std(w)/std(y) 	 0.29 
+std(h)/std(w) 	 2.64 
+corr(h,w)     	 0.85 
+------------------------- 
+
+* Nota:                                  
+----------------------------------------------------- 
+- N° de Simulaciones consideradas: 9500 de 10000 
+- N° de Periodos: 200
+----------------------------------------------------- 
+Total computing time : 0h00m10s

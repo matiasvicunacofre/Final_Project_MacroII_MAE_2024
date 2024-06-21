@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////
 // Authors : Kevin Alvarez - Matias Espinoza - Matias Vicuña
-// Magíster en Economía : Econometría II - Modelo Base Hansen and 
+// Magíster en Economía : Macroeconomía II - Modelo Base Hansen and 
 // Wright (1992) - Replicación 1 - Final Project
 //////////////////////////////////////////////////////////////////////////
 
