@@ -81,7 +81,7 @@ check;
 steady;
 
 // Calculo_Simulacion_Estocastica_(Opciones)
-stoch_simul(hp_filter = 1600, order = 1,irf=20, periods = 200, simul_replic = 10000);
+stoch_simul(hp_filter = 1600, order = 1,irf=20, periods = 200, simul_replic = 10000, nograph);
 
 % Recolecto todos los resultados del Dynare
 % Recopilamos los resultados
@@ -177,3 +177,170 @@ fprintf('----------------------------------------------------- \n');
 fprintf('- N° de Simulaciones consideradas: %d de %d \n',options_.simul_replic-N,options_.simul_replic);
 fprintf('- N° de Periodos: %d\n', options_.periods);
 fprintf('----------------------------------------------------- \n');
+
+%%% IRF del Modelo
+%% Según Paper Hansen and Wright (1992)
+% Nota: Exportamos y Gráficamos de forma independiente de Dynare por Conveniencia
+
+% Crear una figura
+fig_IRF = figure('Units', 'normalized', 'OuterPosition', [0 0 1 1]);
+
+% Crear subplots para cada histograma
+subplot(3, 3, 1);
+plot(oo_.irfs.y_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+hold on;
+yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
+title('y con shock \epsilon_{t+1}');
+xlabel('Periodos');
+ylabel('%\Delta EE');
+
+subplot(3, 3, 2);
+plot(oo_.irfs.I_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+hold on;
+yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
+title('I con shock \epsilon_{t+1}');
+xlabel('Periodos');
+ylabel('%\Delta EE');
+
+subplot(3, 3, 3);
+plot(oo_.irfs.k_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+hold on;
+yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
+title('k con shock \epsilon_{t+1}');
+xlabel('Periodos');
+ylabel('%\Delta EE');
+
+subplot(3, 3, 4);
+plot(oo_.irfs.lambda_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+hold on;
+yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
+title('\lambda con shock \epsilon_{t+1}');
+xlabel('Periodos');
+ylabel('%\Delta EE');
+
+subplot(3, 3, 5);
+plot(oo_.irfs.c_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+hold on;
+yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
+title('c con shock \epsilon_{t+1}');
+xlabel('Periodos');
+ylabel('%\Delta EE');
+
+subplot(3, 3, 6);
+plot(oo_.irfs.h_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+hold on;
+yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
+title('h con shock \epsilon_{t+1}');
+xlabel('Periodos');
+ylabel('%\Delta EE');
+
+subplot(3, 3, 7);
+plot(oo_.irfs.w_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+hold on;
+yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
+title('w con shock \epsilon_{t+1}');
+xlabel('Periodos');
+ylabel('%\Delta EE');
+
+subplot(3, 3, 8);
+plot(oo_.irfs.r_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+hold on;
+yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
+title('r con shock \epsilon_{t+1}');
+xlabel('Periodos');
+ylabel('%\Delta EE');
+
+subplot(3, 3, 9);
+plot(oo_.irfs.prod_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+hold on;
+yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
+title('Producto con shock \epsilon_{t+1}');
+xlabel('Periodos');
+ylabel('%\Delta EE');
+
+% Añadir un título general a la figura
+sgtitle('IRF Modelo - Indivisible Labor');
+
+% Ajustar el tamaño de la figura y el papel
+set(fig_IRF, 'PaperPositionMode', 'auto');
+set(fig_IRF, 'PaperOrientation', 'landscape');
+set(fig_IRF, 'PaperUnits', 'normalized');
+set(fig_IRF, 'PaperPosition', [0 0 1 1]);
+
+% Guardar la figura en formato PNG
+exportgraphics(fig_IRF, 'IRF_indivisible_labor.png', 'Resolution', 300);
+
+%%% Histograma de las Estadísticas
+%% Según Paper Hansen and Wright (1992)
+
+% Crear una figura
+fig_histogram = figure('Units', 'normalized', 'OuterPosition', [0 0 1 1]);
+
+% Crear subplots para cada histograma
+subplot(2, 4, 1);
+histogram(std_mat(1,:,:), 'FaceColor', 'b', 'FaceAlpha', 0.3);
+hold on;
+xline(mean(std_mat(1,:,:)), 'LineWidth', 2, 'Color', 'r', 'LineStyle', '-');
+title('Desviación del Producto');
+xlabel('std(y)');
+ylabel('Frecuencia');
+
+subplot(2, 4, 2);
+histogram(stats_model(1,:), 'FaceColor', 'b', 'FaceAlpha', 0.3);
+hold on;
+xline(mean(stats_model(1,:)), 'LineWidth', 2, 'Color', 'r', 'LineStyle', '-');
+title('Desviación Relativa Consumo/Producto');
+xlabel('std(c)/std(y)');
+ylabel('Frecuencia');
+
+subplot(2, 4, 3);
+histogram(stats_model(2,:), 'FaceColor', 'b', 'FaceAlpha', 0.3);
+hold on;
+xline(mean(stats_model(2,:)), 'LineWidth', 2, 'Color', 'r', 'LineStyle', '-');
+title('Desviación Relativa Inversión/Producto');
+xlabel('std(I)/std(y)');
+ylabel('Frecuencia');
+
+subplot(2, 4, 4);
+histogram(stats_model(3,:), 'FaceColor', 'b', 'FaceAlpha', 0.3);
+hold on;
+xline(mean(stats_model(3,:)), 'LineWidth', 2, 'Color', 'r', 'LineStyle', '-');
+title('Desviación Relativa Horas/Producto');
+xlabel('std(h)/std(y)');
+ylabel('Frecuencia');
+
+subplot(2, 4, 5);
+histogram(stats_model(4,:), 'FaceColor', 'b', 'FaceAlpha', 0.3);
+hold on;
+xline(mean(stats_model(4,:)), 'LineWidth', 2, 'Color', 'r', 'LineStyle', '-');
+title('Desviación Relativa Salario/Producto');
+xlabel('std(w)/std(y)');
+ylabel('Frecuencia');
+
+subplot(2, 4, 6);
+histogram(stats_model(5,:), 'FaceColor', 'b', 'FaceAlpha', 0.3);
+hold on;
+xline(mean(stats_model(5,:)), 'LineWidth', 2, 'Color', 'r', 'LineStyle', '-');
+title('Desviación Relativa Horas/Salario');
+xlabel('std(h)/std(w)');
+ylabel('Frecuencia');
+
+subplot(2, 4, 7);
+histogram(stats_model(6,:), 'FaceColor', 'b', 'FaceAlpha', 0.3);
+hold on;
+xline(mean(stats_model(6,:)), 'LineWidth', 2, 'Color', 'r', 'LineStyle', '-');
+title('Correlación Horas/Salario');
+xlabel('corr(h,w)');
+ylabel('Frecuencia');
+
+% Añadir un título general a la figura
+sgtitle('Estadísticas: Modelo - Indivisible Labor');
+
+% Ajustar el tamaño de la figura y el papel
+set(fig_histogram, 'PaperPositionMode', 'auto');
+set(fig_histogram, 'PaperOrientation', 'landscape');
+set(fig_histogram, 'PaperUnits', 'normalized');
+set(fig_histogram, 'PaperPosition', [0 0 1 1]);
+
+% Guardar la figura en formato PNG
+exportgraphics(fig_histogram, 'stats_indivisible_labor.png', 'Resolution', 300);
