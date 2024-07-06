@@ -26,7 +26,7 @@ EIGENVALUES:
           0.9418           0.9418                0
             0.95             0.95                0
            1.073            1.073                0
-        9.55e+15        -9.55e+15                0
+             Inf             -Inf                0
 
 There are 2 eigenvalue(s) larger than 1 in modulus for 2 forward-looking variable(s)
 The rank condition is verified.
@@ -135,4 +135,4 @@ corr(h,w)     	 0.85
 - N° de Simulaciones consideradas: 9500 de 10000 
 - N° de Periodos: 200
 ----------------------------------------------------- 
-Total computing time : 0h00m31s
+Total computing time : 0h00m15s
