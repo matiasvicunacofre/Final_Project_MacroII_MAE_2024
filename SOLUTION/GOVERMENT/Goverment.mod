@@ -111,7 +111,7 @@ var_names = M_.endo_names_long(var_positions,:);
 std_mat = std(simulated_series_filtered(var_positions,:,N+1:end),0,2)*100;
 
 % Almacenamos todos los resultados
-corr_mat = zeros(9,options_.simul_replic - N);
+corr_mat = zeros(10,options_.simul_replic - N);
 stats_model = zeros(6,options_.simul_replic - N);
 
 % Calculo Correlaciones
@@ -177,7 +177,7 @@ fprintf('----------------------------------------------------- \n');
 fig_IRF = figure('Units', 'normalized', 'OuterPosition', [0 0 1 1]);
 
 % Crear subplots para cada histograma
-subplot(3, 3, 1);
+subplot(2, 5, 1);
 plot(oo_.irfs.y_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
@@ -185,7 +185,7 @@ title('y con shock \epsilon_{t+1}');
 xlabel('Periodos');
 ylabel('%\Delta EE');
 
-subplot(3, 3, 2);
+subplot(2, 5, 2);
 plot(oo_.irfs.I_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
@@ -193,7 +193,7 @@ title('I con shock \epsilon_{t+1}');
 xlabel('Periodos');
 ylabel('%\Delta EE');
 
-subplot(3, 3, 3);
+subplot(2, 5, 3);
 plot(oo_.irfs.k_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
@@ -201,7 +201,7 @@ title('k con shock \epsilon_{t+1}');
 xlabel('Periodos');
 ylabel('%\Delta EE');
 
-subplot(3, 3, 4);
+subplot(2, 5, 4);
 plot(oo_.irfs.lambda_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
@@ -209,7 +209,7 @@ title('\lambda con shock \epsilon_{t+1}');
 xlabel('Periodos');
 ylabel('%\Delta EE');
 
-subplot(3, 3, 5);
+subplot(2, 5, 5);
 plot(oo_.irfs.c_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
@@ -217,7 +217,7 @@ title('c con shock \epsilon_{t+1}');
 xlabel('Periodos');
 ylabel('%\Delta EE');
 
-subplot(3, 3, 6);
+subplot(2, 5, 6);
 plot(oo_.irfs.h_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
@@ -225,7 +225,7 @@ title('h con shock \epsilon_{t+1}');
 xlabel('Periodos');
 ylabel('%\Delta EE');
 
-subplot(3, 3, 7);
+subplot(2, 5, 7);
 plot(oo_.irfs.w_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
@@ -233,7 +233,7 @@ title('w con shock \epsilon_{t+1}');
 xlabel('Periodos');
 ylabel('%\Delta EE');
 
-subplot(3, 3, 8);
+subplot(2, 5, 8);
 plot(oo_.irfs.r_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
@@ -241,11 +241,19 @@ title('r con shock \epsilon_{t+1}');
 xlabel('Periodos');
 ylabel('%\Delta EE');
 
-subplot(3, 3, 9);
+subplot(2, 5, 9);
 plot(oo_.irfs.prod_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
-title('Producto con shock \epsilon_{t+1}');
+title('Productividad con shock \epsilon_{t+1}');
+xlabel('Periodos');
+ylabel('%\Delta EE');
+
+subplot(2, 5, 10);
+plot(oo_.irfs.prod_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+hold on;
+yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
+title('Gasto Gobierno con shock \epsilon_{t+1}');
 xlabel('Periodos');
 ylabel('%\Delta EE');
 

@@ -1,40 +1,43 @@
 //////////////////////////////////////////////////////////////////////////
 // Authors : Kevin Alvarez - Matias Espinoza - Matias Vicuña
-// Magíster en Economía : Macroeconomía II - Modelo Indivisible Labor -
-// Hansen and Wright (1992) - Replicación 2 - Final Project
+// Magíster en Economía : Econometría II - Modelo Nonseparable Leisure 
+// Kydland and Prescott (1982) - Replicación 1 - Final Project
 //////////////////////////////////////////////////////////////////////////
 
-// Modelo bajo Trabajo Indivisible
+// Modelo bajo Planificador central
 
 // Variables endogenas
-var y I k lambda c h w r prod;
+var y I k z c h w r prod L x;
 
 // Variables exogenas
-varexo e_lambda;
+varexo e;
 
 // Parametros
-parameters theta beta gamma sigma_e delta A B lambdass yss css Iss kss hss rss wss prodss;
+parameters theta beta rho sigmae delta A a0 n zss yss css Iss kss hss rss wss Lss xss prodss;
 // Valores parametros
-beta = 0.99;
 theta = 0.36;
+beta = 0.99;
 delta = 0.025;
-gamma = 0.95;
-sigma_e = 0.007;
-h_0 = 0.53;
-A = 2;
+rho = 0.95;
+sigmae = 0.007;
+A=2;
+a0= 0.35;
+n=0.10;
+
 
 // Valores de Estado estacionario
-B = -A*(log(1-h_0))/h_0;
-lambdass = 1;
-hss = (1-theta)/(B*(1-((delta*beta*theta)/((1-beta)*(1-delta)))));
-kss = ((theta*beta)/(1-(1-delta)*beta))^(1/(1-theta))*hss;
-yss = lambda*kss^theta * hss^(1-theta);
-css = ((1-theta)*yss)/(B*hss);
-Iss = yss - css;
-rss =  theta*kss^(theta-1) * hss^(1-theta);
-wss = (1-theta)*kss^theta * hss^(-theta);
+zss=1;
+hss = (1+((A*(a0-n)/(1-n))/(1-theta))*(1 - (beta*delta*theta)/(1-beta*(1-delta))))^(-1); 
+kss = hss*((1/beta -(1-delta))/(theta*zss))^(1/(theta-1));
+Iss = delta*kss;
+yss = zss*kss^(theta)*hss^(1-theta);
+css = yss-delta*kss;
+rss =  1/beta - (1-delta);
+wss = (1-theta)*(yss/hss);
 prodss = yss/hss;
 
+Lss=1-hss;
+xss=hss/n;
 
 model;
 // Ec de  Euler
@@ -42,9 +45,9 @@ exp(c)^(-1) = beta*(exp(c(+1))^(-1)*(exp(r(+1)) + 1-delta));
 // Restricción de recursos
 exp(k) = exp(y) + (1-delta)*exp(k(-1))- exp(c);
 // oferta de trabajo
-(1-theta)*exp(y)/exp(h)=B*exp(c);
+(1-theta)*exp(y)/exp(h)=A/exp(L)*exp(c)*(a0-n)/(1-n);
 // Función de producción
-exp(y)=exp(lambda)*exp(k(-1))^(theta)*exp(h)^(1-theta);
+exp(y)=exp(z)*exp(k(-1))^(theta)*exp(h)^(1-theta);
 // Salarios reales
 exp(w)=(1-theta)*(exp(y)/exp(h));
 // Renta real
@@ -53,8 +56,13 @@ exp(r)=theta*(exp(y)/exp(k(-1)));
 exp(I)=exp(y)-exp(c); 
 // Productividad
 exp(prod)= exp(y)/exp(h);
+
+// ocio no separable
+exp(L)=1-a0*exp(h)-n*(1-a0)*exp(x(-1));
+exp(x)=(1-n)*exp(x(-1))+ exp(h);
+
 // Shock Lineal
-lambda = gamma*lambda(-1) + e_lambda;
+z = rho*z(-1) + e;
 end;
 
 // Dynare Soluciona
@@ -63,25 +71,27 @@ k = log(kss);
 y = log(yss);
 c = log(css);
 I = log(Iss);
-h = log(hss);
-r = log(rss);
-w = log(wss);
-lambda = log(lambdass);
-prod = log(prodss);
+h =log(hss);
+r= log(rss);
+w= log(wss);
+z = log(zss);
+L= log(Lss);
+x= log(xss);
+prod=log(prodss);
 end;
 
 shocks;
-var e_lambda = sigma_e^2; // efecto 0.049
+var e = sigmae^2;
 end;
 
-// Comprueba Condición de Blanchard-Khan
+// Chequeamos condiciones de Blanchard y Khan
 check;
 
 // Calcular ESTADO_ESTACIONARIO
 steady;
 
 // Calculo_Simulacion_Estocastica_(Opciones)
-stoch_simul(hp_filter = 1600, order = 1,irf=20, periods = 200, simul_replic = 10000, nograph);
+stoch_simul(hp_filter = 1600, order = 1, irf=20, periods = 200, simul_replic = 10000);
 
 % Recolecto todos los resultados del Dynare
 % Recopilamos los resultados
@@ -101,18 +111,20 @@ end
 y_pos=strmatch('y',M_.endo_names,'exact');
 I_pos = strmatch('I',M_.endo_names,'exact');
 k_pos=strmatch('k',M_.endo_names,'exact');
-lambda_pos = strmatch('lambda',M_.endo_names,'exact');
+z_pos = strmatch('z',M_.endo_names,'exact');
 c_pos=strmatch('c',M_.endo_names,'exact');
 h_pos=strmatch('h',M_.endo_names,'exact');
 w_pos = strmatch('w',M_.endo_names,'exact');
 r_pos = strmatch('r',M_.endo_names,'exact');
 prod_pos=strmatch('prod',M_.endo_names,'exact');
+L_pos = strmatch('L',M_.endo_names,'exact');
+x_pos = strmatch('x',M_.endo_names,'exact');
 
 %% Estadísticas Descriptivas de las Variables
 %  Desviación y Correlación Promedio - 10.000 Simulaciones
 
 % Definimos las posiciones de las variables
-var_positions = [y_pos; I_pos; k_pos; lambda_pos; c_pos; h_pos; w_pos; r_pos; prod_pos];
+var_positions = [y_pos; I_pos; k_pos; z_pos; c_pos; h_pos; w_pos; r_pos; prod_pos; L_pos; x_pos];
 
 % Nombres de las Variables
 var_names = M_.endo_names_long(var_positions,:);
@@ -121,7 +133,7 @@ var_names = M_.endo_names_long(var_positions,:);
 std_mat = std(simulated_series_filtered(var_positions,:,N+1:end),0,2)*100;
 
 % Almacenamos todos los resultados
-corr_mat = zeros(9,options_.simul_replic - N);
+corr_mat = zeros(11,options_.simul_replic - N);
 stats_model = zeros(6,options_.simul_replic - N);
 
 % Calculo Correlaciones
@@ -134,7 +146,9 @@ for ii=1:options_.simul_replic - N
    corr_mat(6,ii)=corr(results(y_pos,:,ii)',results(prod_pos,:,ii)');
    corr_mat(7,ii)=corr(results(y_pos,:,ii)',results(r_pos,:,ii)');
    corr_mat(8,ii)=corr(results(y_pos,:,ii)',results(w_pos,:,ii)');
-   corr_mat(9,ii)=corr(results(y_pos,:,ii)',results(lambda_pos,:,ii)');
+   corr_mat(9,ii)=corr(results(y_pos,:,ii)',results(z_pos,:,ii)');
+   corr_mat(10,ii)=corr(results(y_pos,:,ii)',results(L_pos,:,ii)');
+   corr_mat(11,ii)=corr(results(y_pos,:,ii)',results(x_pos,:,ii)');
 end
 
 % Calculo Desviaciones Relativas
@@ -186,80 +200,96 @@ fprintf('----------------------------------------------------- \n');
 fig_IRF = figure('Units', 'normalized', 'OuterPosition', [0 0 1 1]);
 
 % Crear subplots para cada histograma
-subplot(3, 3, 1);
-plot(oo_.irfs.y_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+subplot(3, 4, 1);
+plot(oo_.irfs.y_e, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
 title('y con shock \epsilon_{t+1}');
 xlabel('Periodos');
 ylabel('%\Delta EE');
 
-subplot(3, 3, 2);
-plot(oo_.irfs.I_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+subplot(3, 4, 2);
+plot(oo_.irfs.I_e, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
 title('I con shock \epsilon_{t+1}');
 xlabel('Periodos');
 ylabel('%\Delta EE');
 
-subplot(3, 3, 3);
-plot(oo_.irfs.k_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+subplot(3, 4, 3);
+plot(oo_.irfs.k_e, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
 title('k con shock \epsilon_{t+1}');
 xlabel('Periodos');
 ylabel('%\Delta EE');
 
-subplot(3, 3, 4);
-plot(oo_.irfs.lambda_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+subplot(3, 4, 4);
+plot(oo_.irfs.z_e, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
-title('\lambda con shock \epsilon_{t+1}');
+title('z con shock \epsilon_{t+1}');
 xlabel('Periodos');
 ylabel('%\Delta EE');
 
-subplot(3, 3, 5);
-plot(oo_.irfs.c_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+subplot(3, 4, 5);
+plot(oo_.irfs.c_e, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
 title('c con shock \epsilon_{t+1}');
 xlabel('Periodos');
 ylabel('%\Delta EE');
 
-subplot(3, 3, 6);
-plot(oo_.irfs.h_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+subplot(3, 4, 6);
+plot(oo_.irfs.h_e, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
 title('h con shock \epsilon_{t+1}');
 xlabel('Periodos');
 ylabel('%\Delta EE');
 
-subplot(3, 3, 7);
-plot(oo_.irfs.w_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+subplot(3, 4, 7);
+plot(oo_.irfs.w_e, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
 title('w con shock \epsilon_{t+1}');
 xlabel('Periodos');
 ylabel('%\Delta EE');
 
-subplot(3, 3, 8);
-plot(oo_.irfs.r_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+subplot(3, 4, 8);
+plot(oo_.irfs.r_e, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
 title('r con shock \epsilon_{t+1}');
 xlabel('Periodos');
 ylabel('%\Delta EE');
 
-subplot(3, 3, 9);
-plot(oo_.irfs.prod_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+subplot(3, 4, 9);
+plot(oo_.irfs.prod_e, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
 title('Productividad con shock \epsilon_{t+1}');
 xlabel('Periodos');
 ylabel('%\Delta EE');
 
+subplot(3, 4, 10);
+plot(oo_.irfs.L_e, 'LineWidth', 1.5, 'Color', 'b');
+hold on;
+yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
+title('Ocio con shock \epsilon_{t+1}');
+xlabel('Periodos');
+ylabel('%\Delta EE');
+
+subplot(3, 4, 11);
+plot(oo_.irfs.x_e, 'LineWidth', 1.5, 'Color', 'b');
+hold on;
+yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
+title('X con shock \epsilon_{t+1}');
+xlabel('Periodos');
+ylabel('%\Delta EE');
+
 % Añadir un título general a la figura
-sgtitle('IRF Modelo - Indivisible Labor');
+sgtitle('IRF Modelo - NonSeparable Leisure');
 
 % Ajustar el tamaño de la figura y el papel
 set(fig_IRF, 'PaperPositionMode', 'auto');
@@ -268,7 +298,7 @@ set(fig_IRF, 'PaperUnits', 'normalized');
 set(fig_IRF, 'PaperPosition', [0 0 1 1]);
 
 % Guardar la figura en formato PNG
-exportgraphics(fig_IRF, 'IRF_indivisible_labor.png', 'Resolution', 300);
+exportgraphics(fig_IRF, 'IRF_NonSeparable_Leisure.png', 'Resolution', 300);
 
 %%% Histograma de las Estadísticas
 %% Según Paper Hansen and Wright (1992)
@@ -334,7 +364,7 @@ xlabel('corr(h,w)');
 ylabel('Frecuencia');
 
 % Añadir un título general a la figura
-sgtitle('Estadísticas: Modelo - Indivisible Labor');
+sgtitle('Estadísticas: Modelo - NonSeparable Leisure');
 
 % Ajustar el tamaño de la figura y el papel
 set(fig_histogram, 'PaperPositionMode', 'auto');
@@ -343,4 +373,4 @@ set(fig_histogram, 'PaperUnits', 'normalized');
 set(fig_histogram, 'PaperPosition', [0 0 1 1]);
 
 % Guardar la figura en formato PNG
-exportgraphics(fig_histogram, 'stats_indivisible_labor.png', 'Resolution', 300);
+exportgraphics(fig_histogram, 'stats_NonSeparable_Leisure.png', 'Resolution', 300);

@@ -252,7 +252,7 @@ subplot(3, 3, 9);
 plot(oo_.irfs.prod_e, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
-title('Producto con shock \epsilon_{t+1}');
+title('Productividad con shock \epsilon_{t+1}');
 xlabel('Periodos');
 ylabel('%\Delta EE');
 

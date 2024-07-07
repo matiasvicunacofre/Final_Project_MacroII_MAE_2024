@@ -26,7 +26,7 @@ EIGENVALUES:
           0.9418           0.9418                0
             0.95             0.95                0
            1.073            1.073                0
-             Inf             -Inf                0
+        9.55e+15        -9.55e+15                0
 
 There are 2 eigenvalue(s) larger than 1 in modulus for 2 forward-looking variable(s)
 The rank condition is verified.
@@ -135,4 +135,30 @@ corr(h,w)     	 0.85
 - N° de Simulaciones consideradas: 9500 de 10000 
 - N° de Periodos: 200
 ----------------------------------------------------- 
+[Warning: The following error was caught while executing 'onCleanup' class destructor:
+Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('getappdata')" style="font-weight:bold">getappdata</a>
+Value must be a handle.
+Error in matlab.graphics.internal.export.exportPreparation
+
+Error in matlab.graphics.internal.export.exportPreparation
+
+Error in matlab.graphics.internal.export.Exporter/postExportCleanup
+
+Error in matlab.graphics.internal.export.Exporter>@()obj.postExportCleanup(pj)
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('onCleanup/delete', 'C:\Program Files\MATLAB\R2022b\toolbox\matlab\general\onCleanup.m', 23)" style="font-weight:bold">onCleanup/delete</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2022b\toolbox\matlab\general\onCleanup.m',23,0)">line 23</a>)
+            obj.task();
+Error in matlab.graphics.internal.export.Exporter/process
+
+Error in matlab.graphics.internal.export.exportTo
+
+Error in exportgraphics
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('IndivisibleLabor.driver', 'C:\Users\matei\OneDrive\Documentos\Pagina_MVC\Final_Project_MacroII_MAE_2024\SOLUTION\INDIVISIBLE_LABOR\+IndivisibleLabor\driver.m', 645)" style="font-weight:bold">IndivisibleLabor.driver</a> (<a href="matlab: opentoline('C:\Users\matei\OneDrive\Documentos\Pagina_MVC\Final_Project_MacroII_MAE_2024\SOLUTION\INDIVISIBLE_LABOR\+IndivisibleLabor\driver.m',645,0)">line 645</a>)
+exportgraphics(fig_histogram, 'stats_indivisible_labor.png', 'Resolution', 300);
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('dynare', 'C:\dynare\6.1\matlab\dynare.m', 310)" style="font-weight:bold">dynare</a> (<a href="matlab: opentoline('C:\dynare\6.1\matlab\dynare.m',310,0)">line 310</a>)
+    evalin('base',[fname '.driver']);
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('LiveEditorEvaluationHelperE1912053096', 'C:\Users\matei\AppData\Local\Temp\Editor_oomul\LiveEditorEvaluationHelperE1912053096.m', 20)" style="font-weight:bold">LiveEditorEvaluationHelperE1912053096</a> (<a href="matlab: opentoline('C:\Users\matei\AppData\Local\Temp\Editor_oomul\LiveEditorEvaluationHelperE1912053096.m',20,0)">line 20</a>)
+dynare IndivisibleLabor.mod;] 
 Total computing time : 0h00m15s
+Note: warning(s) encountered in MATLAB/Octave code
