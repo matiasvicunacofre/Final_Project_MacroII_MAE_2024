@@ -6,17 +6,157 @@ Evaluating expressions...
 Computing static model derivatives (order 1). 
 Normalizing the static model... 
 Finding the optimal block decomposition of the static model... 
-5 block(s) found: 
-  3 recursive block(s) and 2 simultaneous block(s). 
+6 block(s) found: 
+  5 recursive block(s) and 1 simultaneous block(s). 
   the largest simultaneous block has 5 equation(s) 
                                  and 5 feedback variable(s). 
 Computing dynamic model derivatives (order 1). 
 Normalizing the dynamic model... 
 Finding the optimal block decomposition of the dynamic model... 
-5 block(s) found: 
-  3 recursive block(s) and 2 simultaneous block(s). 
+6 block(s) found: 
+  5 recursive block(s) and 1 simultaneous block(s). 
   the largest simultaneous block has 5 equation(s) 
                                  and 5 feedback variable(s). 
 Preprocessing completed. 
 Preprocessing time: 0h00m00s.
-dynare_solve: starting value results in nonfinite/NaN value. Randomize initial guess...
+
+EIGENVALUES:
+         Modulus             Real        Imaginary
+            0.95             0.95                0
+          0.9569           0.9569                0
+            0.96             0.96                0
+           1.056            1.056                0
+       1.241e+16        1.241e+16                0
+
+There are 2 eigenvalue(s) larger than 1 in modulus for 2 forward-looking variable(s)
+The rank condition is verified.
+
+
+STEADY-STATE RESULTS:
+
+y    		 1.86998
+I    		 0.508977
+k    		 4.19786
+z    		 1
+c    		 1.27495
+h    		 -1.00195
+w    		 2.42564
+r    		 -3.34953
+g    		 0.219991
+prod 		 2.87193
+
+MODEL SUMMARY
+
+  Number of variables:         10
+  Number of stochastic shocks: 2
+  Number of state variables:   3
+  Number of jumpers:           2
+  Number of static variables:  5
+
+
+MATRIX OF COVARIANCE OF EXOGENOUS SHOCKS
+Variables           e        mu
+e            0.000049  0.000000
+mu           0.000000  0.000441
+
+POLICY AND TRANSITION FUNCTIONS
+                                   y               I               k               z               c               h               w               r               g            prod
+Constant                    1.869982        0.508977        4.197856        1.000000        1.274951       -1.001947        2.425642       -3.349525        0.219991        2.871929
+k(-1)                       0.168260       -0.724065        0.956898               0        0.641674       -0.299593        0.467854       -0.831740               0        0.467854
+z(-1)                       1.271202        3.929307        0.098233        0.950000        0.478141        0.501878        0.769324        1.271202               0        0.769324
+g(-1)                       0.083852       -0.127054       -0.003176               0       -0.123182        0.131019       -0.047167        0.083852        0.960000       -0.047167
+e                           1.338107        4.136112        0.103403        1.000000        0.503306        0.528292        0.809815        1.338107               0        0.809815
+mu                          0.019215       -0.029115       -0.000728               0       -0.028228        0.030024       -0.010809        0.019215        0.219991       -0.010809
+
+
+MOMENTS OF SIMULATED VARIABLES (HP filter, lambda = 1600)
+VARIABLE              MEAN       STD. DEV.        VARIANCE        SKEWNESS        KURTOSIS
+y                 1.853549        0.011959        0.000143       -0.151320       -0.795085
+I                 0.489669        0.037038        0.001372       -0.086469       -0.806800
+k                 4.175769        0.003453        0.000012       -0.738880       -0.340877
+z                 0.991141        0.008947        0.000080       -0.126535       -0.796503
+c                 1.257524        0.005313        0.000028       -0.476737       -0.130758
+h                -1.001318        0.004752        0.000023       -0.110855       -0.711067
+w                 2.408580        0.007568        0.000057       -0.253907       -0.584343
+r                -3.343801        0.012088        0.000146       -0.026873       -0.738518
+g                 0.210248        0.005647        0.000032        0.072469       -0.295583
+prod              2.854867        0.007568        0.000057       -0.253907       -0.584343
+
+
+CORRELATION OF SIMULATED VARIABLES (HP filter, lambda = 1600)
+VARIABLE          y        I        k        z        c        h        w        r        g     prod
+y            1.0000   0.9926   0.3671   0.9983   0.9039   0.9531   0.9818   0.9598  -0.1067   0.9818
+I            0.9926   1.0000   0.2672   0.9978   0.8659   0.9682   0.9606   0.9823  -0.1509   0.9606
+k            0.3671   0.2672   1.0000   0.3281   0.7002   0.0893   0.5241   0.0912  -0.1834   0.5241
+z            0.9983   0.9978   0.3281   1.0000   0.8927   0.9583   0.9758   0.9699  -0.1407   0.9758
+c            0.9039   0.8659   0.7002   0.8927   1.0000   0.7320   0.9687   0.7571  -0.3168   0.9687
+h            0.9531   0.9682   0.0893   0.9583   0.7320   1.0000   0.8782   0.9929   0.0541   0.8782
+w            0.9818   0.9606   0.5241   0.9758   0.9687   0.8782   1.0000   0.8932  -0.2027   1.0000
+r            0.9598   0.9823   0.0912   0.9699   0.7571   0.9929   0.8932   1.0000  -0.0637   0.8932
+g           -0.1067  -0.1509  -0.1834  -0.1407  -0.3168   0.0541  -0.2027  -0.0637   1.0000  -0.2027
+prod         0.9818   0.9606   0.5241   0.9758   0.9687   0.8782   1.0000   0.8932  -0.2027   1.0000
+
+
+AUTOCORRELATION OF SIMULATED VARIABLES (HP filter, lambda = 1600)
+VARIABLE          1        2        3        4        5
+y            0.6976   0.4077   0.2003   0.0414  -0.0402
+I            0.6905   0.3999   0.1928   0.0318  -0.0492
+k            0.9506   0.8577   0.7372   0.6040   0.4691
+z            0.6949   0.4059   0.1992   0.0390  -0.0427
+c            0.7868   0.5722   0.3978   0.2413   0.1313
+h            0.6789   0.3705   0.1529  -0.0086  -0.0898
+w            0.7298   0.4677   0.2730   0.1155   0.0248
+r            0.6843   0.3875   0.1767   0.0156  -0.0640
+g            0.6979   0.4072   0.2038   0.0134  -0.1787
+prod         0.7298   0.4677   0.2730   0.1155   0.0248
+
+
+
+VARIANCE DECOMPOSITION SIMULATING ONE SHOCK AT A TIME (in percent) (HP filter, lambda = 1600)
+                       e                mu  Tot. lin. contr.
+y                 121.59              0.28            121.87
+I                 122.68              0.07            122.75
+k                  64.41              0.07             64.48
+z                 121.78              0.00            121.78
+c                  94.31              3.09             97.41
+h                 126.18              4.36            130.54
+w                 112.04              0.23            112.26
+r                 125.97              0.28            126.25
+g                   0.00            165.46            165.46
+prod              112.04              0.23            112.26
+Note: numbers do not add up to 100 due to non-zero correlation of simulated shocks in small samples
+
+
+----------------------------------------------------- 
+ESTADÍSTICAS DE LAS VARIABLES*           
+----------------------------------------------------- 
+                     	      std(x) 	   corr(y,x) 
+y                    	 1.20 (0.12) 	 1.00 (0.00) 
+I                    	 3.71 (0.35) 	 0.87 (0.04) 
+k                    	 0.32 (0.05) 	 0.94 (0.02) 
+z                    	 0.90 (0.09) 	 0.68 (0.10) 
+c                    	 0.50 (0.06) 	 0.59 (0.16) 
+h                    	 0.49 (0.05) 	 0.96 (0.01) 
+w                    	 0.74 (0.07) 	 0.53 (0.17) 
+r                    	 1.23 (0.12) 	 0.96 (0.01) 
+g                    	 0.59 (0.06) 	 0.99 (0.00) 
+prod                 	 0.74 (0.07) 	 0.03 (0.30) 
+----------------------------------------------------- 
+
+------------------------- 
+DESVIACIONES RELATIVAS*                  
+------------------------- 
+std(c)/std(y) 	 0.42 
+std(I)/std(y) 	 3.09 
+std(h)/std(y) 	 0.41 
+std(w)/std(y) 	 0.62 
+std(h)/std(w) 	 0.66 
+corr(h,w)     	 0.87 
+------------------------- 
+
+* Nota:                                  
+----------------------------------------------------- 
+- N° de Simulaciones consideradas: 9500 de 10000 
+- N° de Periodos: 200
+----------------------------------------------------- 
+Total computing time : 0h00m17s

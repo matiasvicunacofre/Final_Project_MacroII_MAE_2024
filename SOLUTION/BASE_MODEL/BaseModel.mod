@@ -20,10 +20,10 @@ beta = 0.99;
 delta = 0.025;
 rho = 0.95;
 sigmae = 0.007;
-A=2;
+A = 2;
 
 // Valores de Estado estacionario
-zss=1;
+zss = 1;
 hss = (1+(A/(1-theta))*(1 - (beta*delta*theta)/(1-beta*(1-delta))))^(-1); 
 kss = hss*((1/beta -(1-delta))/(theta*zss))^(1/(theta-1));
 Iss = delta*kss;
@@ -52,7 +52,7 @@ exp(I)=exp(y)-exp(c);
 // Productividad
 exp(prod)= exp(y)/exp(h);
 // Shock Lineal
- z = rho*z(-1) + e;
+z = rho*z(-1) + e;
 end;
 
 // Dynare Soluciona

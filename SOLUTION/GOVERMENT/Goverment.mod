@@ -7,31 +7,49 @@
 // Modelo bajo Gobierno
 
 // Variables endogenas
-var y I k lambda c h w r g prod;
+var y I k z c h w r g prod;
 
 // Variables exogenas
-varexo e_lambda;
+varexo e mu;
 
 // Parametros
-parameters theta beta gamma sigma_e delta A B lambdass yss css Iss kss hss rss wss prodss;
+parameters beta theta delta gamma A g_bar lambda sigma_e sigma_mu;
+
 // Valores parametros
 beta = 0.99;
 theta = 0.36;
 delta = 0.025;
 gamma = 0.95;
-sigma_e = 0.007;
-h_0 = 0.53;
 A = 2;
+g_bar = 0.22;
+lambda = 0.96;
 
+// Shocks - Productividad y Gobierno
+sigma_e = 0.007;
+sigma_mu = 0.021;
+
+// Valores de Estado estacionario
+zss = 1;
+gss = 1;
+hss = (1+(A/(1-theta))*(1 - (beta*delta*theta)/(1-beta*(1-delta))))^(-1); 
+kss = hss*((1/beta -(1-delta))/(theta*zss))^(1/(theta-1));
+Iss = delta*kss;
+yss = zss*kss^(theta)*hss^(1-theta);
+css = yss-delta*kss;
+rss =  1/beta - (1-delta);
+wss = (1-theta)*(yss/hss);
+prodss = yss/hss;
+
+// Modelo de Equilibrio
 model;
 // Ec de  Euler
-exp(c)^(-1) = beta*(exp(c(+1))^(-1)*(exp(r(+1)) + 1-delta)); 
+exp(c)^(-1)=beta*(exp(c(+1))^(-1)*(exp(r(+1)) + 1-delta)); 
 // Restricción de recursos
-exp(k) = exp(y) + (1-delta)*exp(k(-1))- exp(c);
+exp(k)=exp(y) + (1-delta)*exp(k(-1))- exp(c) - exp(g);
 // oferta de trabajo
-(1-theta)*exp(y)/exp(h)=B*exp(c);
+(1-theta)*exp(y)/exp(h)=A/(1-exp(h))*exp(c);
 // Función de producción
-exp(y)=exp(lambda)*exp(k(-1))^(theta)*exp(h)^(1-theta);
+exp(y)=exp(z)*exp(k(-1))^(theta)*exp(h)^(1-theta);
 // Salarios reales
 exp(w)=(1-theta)*(exp(y)/exp(h));
 // Renta real
@@ -39,29 +57,33 @@ exp(r)=theta*(exp(y)/exp(k(-1)));
 // Inversión
 exp(I)=exp(y)-exp(c)-exp(g); 
 // Productividad
-exp(prod)= exp(y)/exp(h);
-// Shock Lineal
-lambda = gamma*lambda(-1) + e_lambda;
-//Gobierno
-exp(g)=(y)-exp(c)-exp(I);  
+exp(prod)=(exp(y)/exp(h));
+// Shock Productividad
+log(z)=gamma*log(z(-1)) + e;
+// Shock Gobierno
+log(g)=(1-lambda)*log(g_bar) + lambda*log(g(-1)) + mu;  
+end;
+
+// Shocks
+shocks;
+var e = sigma_e^2; 
+var mu = sigma_mu^2;
 end;
 
 // Dynare Soluciona
 initval;
-k = log(1);
-y = log(1);
-c = log(1);
-I = log(1);
-h = log(1);
-r = log(1);
-w = log(1);
-lambda = log(1);
-prod = log(1);
+k = log(kss);
+y = log(yss);
+c = log(css);
+I = log(Iss);
+h = log(hss);
+r = log(rss);
+w = log(wss);
+z = zss;
+g = gss;
+prod=log(prodss);
 end;
 
-shocks;
-var e_lambda = sigma_e^2; // efecto 0.049
-end;
 
 // Comprueba Condición de Blanchard-Khan
 check;
@@ -70,7 +92,7 @@ check;
 steady;
 
 // Calculo_Simulacion_Estocastica_(Opciones)
-stoch_simul(hp_filter = 1600, order = 1,irf=20, periods = 200, simul_replic = 10000, nograph);
+stoch_simul(hp_filter = 1600, order = 1,irf=20, periods = 200, simul_replic = 10000);
 
 % Recolecto todos los resultados del Dynare
 % Recopilamos los resultados
@@ -90,7 +112,7 @@ end
 y_pos=strmatch('y',M_.endo_names,'exact');
 I_pos = strmatch('I',M_.endo_names,'exact');
 k_pos=strmatch('k',M_.endo_names,'exact');
-lambda_pos = strmatch('lambda',M_.endo_names,'exact');
+z_pos = strmatch('z',M_.endo_names,'exact');
 c_pos=strmatch('c',M_.endo_names,'exact');
 h_pos=strmatch('h',M_.endo_names,'exact');
 w_pos = strmatch('w',M_.endo_names,'exact');
@@ -102,7 +124,7 @@ prod_pos=strmatch('prod',M_.endo_names,'exact');
 %  Desviación y Correlación Promedio - 10.000 Simulaciones
 
 % Definimos las posiciones de las variables
-var_positions = [y_pos; I_pos; k_pos; lambda_pos; c_pos; h_pos; w_pos; r_pos; g_pos; prod_pos];
+var_positions = [y_pos; I_pos; k_pos; z_pos; c_pos; h_pos; w_pos; r_pos; g_pos; prod_pos];
 
 % Nombres de las Variables
 var_names = M_.endo_names_long(var_positions,:);
@@ -124,7 +146,7 @@ for ii=1:options_.simul_replic - N
    corr_mat(6,ii)=corr(results(y_pos,:,ii)',results(prod_pos,:,ii)');
    corr_mat(7,ii)=corr(results(y_pos,:,ii)',results(r_pos,:,ii)');
    corr_mat(8,ii)=corr(results(y_pos,:,ii)',results(w_pos,:,ii)');
-   corr_mat(9,ii)=corr(results(y_pos,:,ii)',results(lambda_pos,:,ii)');
+   corr_mat(9,ii)=corr(results(y_pos,:,ii)',results(z_pos,:,ii)');
    corr_mat(10,ii)=corr(results(y_pos,:,ii)',results(g_pos,:,ii)');
 end
 
@@ -169,7 +191,7 @@ fprintf('- N° de Simulaciones consideradas: %d de %d \n',options_.simul_replic-
 fprintf('- N° de Periodos: %d\n', options_.periods);
 fprintf('----------------------------------------------------- \n');
 
-%%% IRF del Modelo
+%%% IRF del Modelo Con Shock e_t+1
 %% Según Paper Hansen and Wright (1992)
 % Nota: Exportamos y Gráficamos de forma independiente de Dynare por Conveniencia
 
@@ -178,7 +200,7 @@ fig_IRF = figure('Units', 'normalized', 'OuterPosition', [0 0 1 1]);
 
 % Crear subplots para cada histograma
 subplot(2, 5, 1);
-plot(oo_.irfs.y_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+plot(oo_.irfs.y_e, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
 title('y con shock \epsilon_{t+1}');
@@ -186,7 +208,7 @@ xlabel('Periodos');
 ylabel('%\Delta EE');
 
 subplot(2, 5, 2);
-plot(oo_.irfs.I_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+plot(oo_.irfs.I_e, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
 title('I con shock \epsilon_{t+1}');
@@ -194,7 +216,7 @@ xlabel('Periodos');
 ylabel('%\Delta EE');
 
 subplot(2, 5, 3);
-plot(oo_.irfs.k_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+plot(oo_.irfs.k_e, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
 title('k con shock \epsilon_{t+1}');
@@ -202,15 +224,15 @@ xlabel('Periodos');
 ylabel('%\Delta EE');
 
 subplot(2, 5, 4);
-plot(oo_.irfs.lambda_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+plot(oo_.irfs.z_e, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
-title('\lambda con shock \epsilon_{t+1}');
+title('z con shock \epsilon_{t+1}');
 xlabel('Periodos');
 ylabel('%\Delta EE');
 
 subplot(2, 5, 5);
-plot(oo_.irfs.c_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+plot(oo_.irfs.c_e, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
 title('c con shock \epsilon_{t+1}');
@@ -218,7 +240,7 @@ xlabel('Periodos');
 ylabel('%\Delta EE');
 
 subplot(2, 5, 6);
-plot(oo_.irfs.h_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+plot(oo_.irfs.h_e, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
 title('h con shock \epsilon_{t+1}');
@@ -226,7 +248,7 @@ xlabel('Periodos');
 ylabel('%\Delta EE');
 
 subplot(2, 5, 7);
-plot(oo_.irfs.w_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+plot(oo_.irfs.w_e, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
 title('w con shock \epsilon_{t+1}');
@@ -234,7 +256,7 @@ xlabel('Periodos');
 ylabel('%\Delta EE');
 
 subplot(2, 5, 8);
-plot(oo_.irfs.r_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+plot(oo_.irfs.r_e, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
 title('r con shock \epsilon_{t+1}');
@@ -242,7 +264,7 @@ xlabel('Periodos');
 ylabel('%\Delta EE');
 
 subplot(2, 5, 9);
-plot(oo_.irfs.prod_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+plot(oo_.irfs.prod_e, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
 title('Productividad con shock \epsilon_{t+1}');
@@ -250,7 +272,7 @@ xlabel('Periodos');
 ylabel('%\Delta EE');
 
 subplot(2, 5, 10);
-plot(oo_.irfs.prod_e_lambda, 'LineWidth', 1.5, 'Color', 'b');
+plot(oo_.irfs.g_e, 'LineWidth', 1.5, 'Color', 'b');
 hold on;
 yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
 title('Gasto Gobierno con shock \epsilon_{t+1}');
@@ -258,7 +280,7 @@ xlabel('Periodos');
 ylabel('%\Delta EE');
 
 % Añadir un título general a la figura
-sgtitle('IRF Modelo - Goverment');
+sgtitle('IRF Modelo - Goverment shock \epsilon_{t+1}');
 
 % Ajustar el tamaño de la figura y el papel
 set(fig_IRF, 'PaperPositionMode', 'auto');
@@ -267,7 +289,107 @@ set(fig_IRF, 'PaperUnits', 'normalized');
 set(fig_IRF, 'PaperPosition', [0 0 1 1]);
 
 % Guardar la figura en formato PNG
-exportgraphics(fig_IRF, 'IRF_goverment.png', 'Resolution', 300);
+exportgraphics(fig_IRF, 'IRF_goverment_shock_e.png', 'Resolution', 300);
+
+%%% IRF del Modelo con Shock mu_t+1
+%% Según Paper Hansen and Wright (1992)
+% Nota: Exportamos y Gráficamos de forma independiente de Dynare por Conveniencia
+
+% Crear una figura
+fig_IRF = figure('Units', 'normalized', 'OuterPosition', [0 0 1 1]);
+
+% Crear subplots para cada histograma
+subplot(2, 5, 1);
+plot(oo_.irfs.y_mu, 'LineWidth', 1.5, 'Color', 'b');
+hold on;
+yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
+title('y con shock \mu_{t+1}');
+xlabel('Periodos');
+ylabel('%\Delta EE');
+
+subplot(2, 5, 2);
+plot(oo_.irfs.I_mu, 'LineWidth', 1.5, 'Color', 'b');
+hold on;
+yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
+title('I con shock \mu_{t+1}');
+xlabel('Periodos');
+ylabel('%\Delta EE');
+
+subplot(2, 5, 3);
+plot(oo_.irfs.k_mu, 'LineWidth', 1.5, 'Color', 'b');
+hold on;
+yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
+title('k con shock \mu_{t+1}');
+xlabel('Periodos');
+ylabel('%\Delta EE');
+
+subplot(2, 5, 4);
+plot(oo_.irfs.z_mu, 'LineWidth', 1.5, 'Color', 'b');
+hold on;
+yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
+title('z con shock \mu_{t+1}');
+xlabel('Periodos');
+ylabel('%\Delta EE');
+
+subplot(2, 5, 5);
+plot(oo_.irfs.c_mu, 'LineWidth', 1.5, 'Color', 'b');
+hold on;
+yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
+title('c con shock \mu_{t+1}');
+xlabel('Periodos');
+ylabel('%\Delta EE');
+
+subplot(2, 5, 6);
+plot(oo_.irfs.h_mu, 'LineWidth', 1.5, 'Color', 'b');
+hold on;
+yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
+title('h con shock \mu_{t+1}');
+xlabel('Periodos');
+ylabel('%\Delta EE');
+
+subplot(2, 5, 7);
+plot(oo_.irfs.w_mu, 'LineWidth', 1.5, 'Color', 'b');
+hold on;
+yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
+title('w con shock \mu_{t+1}');
+xlabel('Periodos');
+ylabel('%\Delta EE');
+
+subplot(2, 5, 8);
+plot(oo_.irfs.r_mu, 'LineWidth', 1.5, 'Color', 'b');
+hold on;
+yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
+title('r con shock \mu_{t+1}');
+xlabel('Periodos');
+ylabel('%\Delta EE');
+
+subplot(2, 5, 9);
+plot(oo_.irfs.prod_mu, 'LineWidth', 1.5, 'Color', 'b');
+hold on;
+yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
+title('Productividad con shock \mu_{t+1}');
+xlabel('Periodos');
+ylabel('%\Delta EE');
+
+subplot(2, 5, 10);
+plot(oo_.irfs.g_mu, 'LineWidth', 1.5, 'Color', 'b');
+hold on;
+yline(0, 'LineWidth', 1.5, 'Color', 'r', 'LineStyle', '-');
+title('Gasto Gobierno con shock \mu_{t+1}');
+xlabel('Periodos');
+ylabel('%\Delta EE');
+
+% Añadir un título general a la figura
+sgtitle('IRF Modelo - Goverment shock \mu_{t+1}');
+
+% Ajustar el tamaño de la figura y el papel
+set(fig_IRF, 'PaperPositionMode', 'auto');
+set(fig_IRF, 'PaperOrientation', 'landscape');
+set(fig_IRF, 'PaperUnits', 'normalized');
+set(fig_IRF, 'PaperPosition', [0 0 1 1]);
+
+% Guardar la figura en formato PNG
+exportgraphics(fig_IRF, 'IRF_goverment_shock_mu.png', 'Resolution', 300);
 
 %%% Histograma de las Estadísticas
 %% Según Paper Hansen and Wright (1992)
