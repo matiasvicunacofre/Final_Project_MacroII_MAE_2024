@@ -1,0 +1,46 @@
+Starting Dynare (version 6.1).
+Calling Dynare with arguments: none
+Starting preprocessing of the model file ... 
+Found 8 equation(s). 
+Evaluating expressions... 
+Computing static model derivatives (order 1). 
+Normalizing the static model... 
+Finding the optimal block decomposition of the static model... 
+5 block(s) found: 
+  4 recursive block(s) and 1 simultaneous block(s). 
+  the largest simultaneous block has 4 equation(s) 
+                                 and 4 feedback variable(s). 
+Computing dynamic model derivatives (order 1). 
+Normalizing the dynamic model... 
+Finding the optimal block decomposition of the dynamic model... 
+5 block(s) found: 
+  4 recursive block(s) and 1 simultaneous block(s). 
+  the largest simultaneous block has 4 equation(s) 
+                                 and 4 feedback variable(s). 
+Preprocessing completed. 
+Preprocessing time: 0h00m00s.
+
+STEADY-STATE RESULTS:
+
+c      		 0.110324
+h      		 0.00708328
+k      		 1.22235
+y      		 0.395969
+a      		 0
+i      		 -1.08023
+lambda 		 1.72439
+tb     		 0.0199669
+
+------------------------------------------------------------------------- 
+TABLA 3: Std. dev y correlación - Modelo 4: Complete asset markets  
+------------------------------------------------------------------------- 
+Variable 	 Std Dev	 Auto Corr 	Corr con y
+------------------------------------------------------------------------- 
+ y  	  	  3.1  	  	 0.61 	 	  1.00
+ c  	  	  1.9  	  	 0.61 	 	  1.00
+ i  	  	  9.1  	  	 0.07 	 	  0.66
+ h  	  	  2.1  	  	 0.61 	 	  1.00
+ tb/y  	  	  1.6  	  	 0.39 	 	  0.13
+ ca/y 	   	   NaN   	  	 NaN  	   	     NaN 
+------------------------------------------------------------------------- 
+Total computing time : 0h00m00s

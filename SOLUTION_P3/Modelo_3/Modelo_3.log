@@ -1,0 +1,49 @@
+Starting Dynare (version 6.1).
+Calling Dynare with arguments: none
+Starting preprocessing of the model file ... 
+Found 11 equation(s). 
+Evaluating expressions... 
+Computing static model derivatives (order 1). 
+Normalizing the static model... 
+Finding the optimal block decomposition of the static model... 
+5 block(s) found: 
+  4 recursive block(s) and 1 simultaneous block(s). 
+  the largest simultaneous block has 7 equation(s) 
+                                 and 7 feedback variable(s). 
+Computing dynamic model derivatives (order 1). 
+Normalizing the dynamic model... 
+Finding the optimal block decomposition of the dynamic model... 
+4 block(s) found: 
+  3 recursive block(s) and 1 simultaneous block(s). 
+  the largest simultaneous block has 7 equation(s) 
+                                 and 7 feedback variable(s). 
+Preprocessing completed. 
+Preprocessing time: 0h00m00s.
+
+STEADY-STATE RESULTS:
+
+c      		 0.108295
+h      		 0.00708333
+k      		 1.22235
+y      		 0.395969
+a      		 0
+i      		 -1.08023
+r      		 -3.21888
+d      		 0.79825
+lambda 		 1.73514
+tb     		 0.0214905
+ca     		 0
+
+------------------------------------------------------------------------- 
+TABLA 3: Std. dev y correlación - Modelo 3: Portfolio adjustment costs  
+------------------------------------------------------------------------- 
+Variable 	 Std Dev	 Auto Corr 	Corr con y
+------------------------------------------------------------------------- 
+ y  	  	  3.1  	  	 0.62 	 	  1.00
+ c  	  	  2.7  	  	 0.78 	 	  0.85
+ i  	  	  9.0  	  	 0.07 	 	  0.67
+ h  	  	  2.1  	  	 0.62 	 	  1.00
+ tb/y  	  	  1.8  	  	 0.50 	 	  -0.05
+ ca/y  	  	  1.5  	  	 0.32 	 	  0.05
+------------------------------------------------------------------------- 
+Total computing time : 0h00m00s

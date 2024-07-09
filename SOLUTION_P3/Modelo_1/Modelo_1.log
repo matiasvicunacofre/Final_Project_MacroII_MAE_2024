@@ -1,0 +1,68 @@
+Starting Dynare (version 6.1).
+Calling Dynare with arguments: none
+Starting preprocessing of the model file ... 
+Found 13 equation(s). 
+Evaluating expressions... 
+Computing static model derivatives (order 1). 
+Normalizing the static model... 
+Finding the optimal block decomposition of the static model... 
+8 block(s) found: 
+  7 recursive block(s) and 1 simultaneous block(s). 
+  the largest simultaneous block has 6 equation(s) 
+                                 and 6 feedback variable(s). 
+Computing dynamic model derivatives (order 1). 
+Normalizing the dynamic model... 
+Finding the optimal block decomposition of the dynamic model... 
+6 block(s) found: 
+  5 recursive block(s) and 1 simultaneous block(s). 
+  the largest simultaneous block has 6 equation(s) 
+                                 and 6 feedback variable(s). 
+Preprocessing completed. 
+Preprocessing time: 0h00m00s.
+
+EIGENVALUES:
+         Modulus             Real        Imaginary
+       4.477e-18        4.477e-18                0
+            0.42             0.42                0
+          0.4855           0.4855                0
+          0.9838           0.9838                0
+            1.04             1.04                0
+           1.056            1.056                0
+           2.142            2.142                0
+             Inf              Inf                0
+             Inf              Inf                0
+             Inf              Inf                0
+
+There are 6 eigenvalue(s) larger than 1 in modulus for 6 forward-looking variable(s)
+The rank condition is verified.
+
+
+STEADY-STATE RESULTS:
+
+c      		 0.110602
+h      		 0.00739062
+k      		 1.22309
+y      		 0.396416
+a      		 0
+i      		 -1.07949
+r      		 -3.21888
+d      		 0.7442
+beta   		 0.961538
+eta    		 35.5771
+lambda 		 2.11473
+tb     		 0.0200257
+ca     		 0
+
+------------------------------------------------------------------------- 
+TABLA 3: Std. dev y correlación - Modelo 1: Endogenous discount factor  
+------------------------------------------------------------------------- 
+Variable 	 Std Dev	 Auto Corr 	Corr con y
+------------------------------------------------------------------------- 
+ y  	  	  3.1  	  	 0.61 	 	  1.00
+ c  	  	  2.3  	  	 0.70 	 	  0.94
+ i  	  	  9.1  	  	 0.07 	 	  0.66
+ h  	  	  2.1  	  	 0.61 	 	  1.00
+ tb/y  	  	  1.5  	  	 0.33 	 	  -0.01
+ ca/y  	  	  1.5  	  	 0.30 	 	  0.03
+------------------------------------------------------------------------- 
+Total computing time : 0h00m00s
