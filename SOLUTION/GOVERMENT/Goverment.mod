@@ -16,28 +16,28 @@ varexo e mu;
 parameters beta theta delta gamma A g_bar lambda sigma_e sigma_mu;
 
 // Valores parametros
-beta = 0.99;
-theta = 0.36;
-delta = 0.025;
-gamma = 0.95;
-A = 2;
-g_bar = 0.22;
+beta   = 0.99;
+theta  = 0.36;
+delta  = 0.025;
+gamma  = 0.95;
+A      = 2;
+g_bar  = 0.22;
 lambda = 0.96;
 
 // Shocks - Productividad y Gobierno
-sigma_e = 0.007;
+sigma_e  = 0.007;
 sigma_mu = 0.021;
 
 // Valores de Estado estacionario
-zss = 1;
-gss = 1;
-hss = (1+(A/(1-theta))*(1 - (beta*delta*theta)/(1-beta*(1-delta))))^(-1); 
-kss = hss*((1/beta -(1-delta))/(theta*zss))^(1/(theta-1));
-Iss = delta*kss;
-yss = zss*kss^(theta)*hss^(1-theta);
-css = yss-delta*kss;
-rss =  1/beta - (1-delta);
-wss = (1-theta)*(yss/hss);
+zss    = 1;
+gss    = 1;
+hss    = (1+(A/(1-theta))*(1 - (beta*delta*theta)/(1-beta*(1-delta))))^(-1); 
+kss    = hss*((1/beta -(1-delta))/(theta*zss))^(1/(theta-1));
+Iss    = delta*kss;
+yss    = zss*kss^(theta)*hss^(1-theta);
+css    = yss-delta*kss;
+rss    =  1/beta - (1-delta);
+wss    = (1-theta)*(yss/hss);
 prodss = yss/hss;
 
 // Modelo de Equilibrio
@@ -66,22 +66,22 @@ end;
 
 // Shocks
 shocks;
-var e = sigma_e^2; 
+var e  = sigma_e^2; 
 var mu = sigma_mu^2;
 end;
 
 // Dynare Soluciona
 initval;
-k = log(kss);
-y = log(yss);
-c = log(css);
-I = log(Iss);
-h = log(hss);
-r = log(rss);
-w = log(wss);
-z = zss;
-g = gss;
-prod=log(prodss);
+k    = log(kss);
+y    = log(yss);
+c    = log(css);
+I    = log(Iss);
+h    = log(hss);
+r    = log(rss);
+w    = log(wss);
+z    = zss;
+g    = gss;
+prod = log(prodss);
 end;
 
 
