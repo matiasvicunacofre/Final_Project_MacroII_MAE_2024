@@ -20,7 +20,7 @@ clearvars; close all; clc;
 dynare IndivisibleLabor.mod;
 
 %% Tercera Extensión - Modelo con Gobierno
-% Usando el paper de Hansen y Wright, replicamos la segunda extensión.
+% Usando el paper de Hansen y Wright, replicamos la tercera extensión.
 % función "get_simul_replications.m" de Johannes Pfeifer
 clearvars; close all; clc;
 
@@ -28,9 +28,17 @@ clearvars; close all; clc;
 dynare Goverment.mod;
 
 %% Cuarta Extensión - Modelo con Ocio Divisible
-% Usando el paper de Hansen y Wright, replicamos la segunda extensión.
+% Usando el paper de Hansen y Wright, replicamos la cuarta extensión.
 % función "get_simul_replications.m" de Johannes Pfeifer
 clearvars; close all; clc;
 
 % Comenzamos definiendo el espacio de los modelo de dynare (.mod)
 dynare NonseparableLeisure.mod;
+
+%% Quinta Extensión - Modelo con Producción de Hogares
+% Usando el paper de Hansen y Wright, replicamos la quinta extensión.
+% función "get_simul_replications.m" de Johannes Pfeifer
+clearvars; close all; clc;
+
+% Comenzamos definiendo el espacio de los modelo de dynare (.mod)
+dynare HomeProduction.mod;

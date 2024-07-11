@@ -3,6 +3,15 @@
 // Magíster en Economía : Macroeconomía II - Modelo Indivisible Labor -
 // Hansen and Wright (1992) - Replicación 2 - Final Project
 //////////////////////////////////////////////////////////////////////////
+// Nota:
+// Este archivo replica los modelos estudiados en:
+// Hansen and Wright (1992): "The Labor Market in Real Business Cycle Theory", Quarterly Review, Federal Reserve Bank of Minneapolis, pp 2-13.
+// Este trabajo fue inspirado y utiliza parte del código escrito por Johannes Pfeifer, el cual se puede encontrar en:
+// https://github.com/JohannesPfeifer/DSGE_mod/blob/master/Hansen_1985/Hansen_1985.mod
+// Además de ello, se uso el código "get_simul_replications.m" de Pfeifer para la recuperación de las simulaciones, el recurso se puede encontrar en:
+// https://github.com/JohannesPfeifer/DSGE_mod/blob/master/Hansen_1985/get_simul_replications.m
+//
+//////////////////////////////////////////////////////////////////////////
 
 // Modelo bajo Trabajo Indivisible
 

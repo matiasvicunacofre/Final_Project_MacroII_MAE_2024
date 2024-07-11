@@ -1,0 +1,42 @@
+Starting Dynare (version 6.0).
+Calling Dynare with arguments: none
+Starting preprocessing of the model file ... 
+Found 11 equation(s). 
+Evaluating expressions... 
+Computing static model derivatives (order 1). 
+Normalizing the static model... 
+Finding the optimal block decomposition of the static model... 
+6 block(s) found: 
+  5 recursive block(s) and 1 simultaneous block(s). 
+  the largest simultaneous block has 5 equation(s) 
+                                 and 5 feedback variable(s). 
+Computing dynamic model derivatives (order 2). 
+Normalizing the dynamic model... 
+Finding the optimal block decomposition of the dynamic model... 
+4 block(s) found: 
+  3 recursive block(s) and 1 simultaneous block(s). 
+  the largest simultaneous block has 5 equation(s) 
+                                 and 5 feedback variable(s). 
+Preprocessing completed. 
+Preprocessing time: 0h00m00s.
+
+----------------------------------------------------- 
+TABLA 4.1.1: Shock tecnológico*          
+----------------------------------------------------- 
+phi_pi           1.5            1.5            5.0            1.5   
+phi_y          0.125          0.000          0.000          1.000   
+y             1.7650         2.0105         2.2544         0.9515   
+y_tilda       0.5292         0.2837         0.0398         1.3426   
+pi            0.8335         0.4468         0.0626         2.1145   
+L             1.4679         0.4218         0.0083         9.4486   
+
+----------------------------------------------------- 
+TABLA 4.1.2: Shock de preferencias*      
+----------------------------------------------------- 
+phi_pi           1.5            1.5            5.0            1.5   
+phi_y          0.125          0.000          0.000          1.000   
+y             0.8917         0.9870         0.4893         0.5321   
+y_tilda       0.8917         0.9870         0.4893         0.5321   
+pi            0.3031         0.3355         0.1663         0.1809   
+L             0.2245         0.2750         0.0676         0.0799   
+Total computing time : 0h00m00s

@@ -26,7 +26,7 @@ varexo e_z e_a;
 // Parámetros
 parameters rho_z rho_a beta eta theta epsilon sigma phi alpha phi_pi phi_y rho lambda THETA kappa psi_ya; 
 
-// Calibración
+// Valores
 rho_z = 0.5;
 rho_a = 0.9;
 beta = 0.99;
@@ -81,15 +81,17 @@ a = rho_a * a(-1) + e_a; // Shock de productividad
 i = rho + phi_pi * pi + phi_y * y_tilda + phi_y * y_hat;
 end;
 
-// Definimos condiciones para los diferentes choques
-@#define nonsimul  = 1    //Para replicar la tabla 4.1
+///////////////////////////////////////////////////////////////////////////
+
+// Condiciones de acuerdo con el shock
+@#define nonsimul  = 1    
 @#define simultech = 0   //Simulaciones con choque tecnológico
 @#define simuldem = 0   //Simulaciones con choque de demanda
 @#define simulboth = 0 //Simulaciones con ambos choques
 
 
 @#if simultech ==1
-// SIMULACIÓN SÓLO CHOQUES TECNOLÓGICOS
+// Shocks tecnológicos aislados
 
 shocks(overwrite);
 var e_a = 1;
@@ -118,14 +120,14 @@ end;
 // Histograma
 fig_histo1= figure;
 histogram(L_valuest);
-title('L ante choques de tecnología (regla sin expectativas)');
+title('L bajo shocks tecnológicos(Taylor rule sin expectativas)');
 xlabel('L');
 ylabel('Frequencia');
 exportgraphics(fig_histo1, 'histograma1.png', 'Resolution', 300);
 @# endif
 
 @#if simuldem ==1
-// SIMULACIÓN SÓLO CHOQUES TECNOLÓGICOS
+// Shocks de preferencias aislados
 
 shocks(overwrite);
 var e_a = 0;
@@ -152,14 +154,14 @@ for i = 1:options_.simul_replic
 end;
 fig_histo2= figure;
 histogram(L_valuesd);
-title('L ante choques de demanda (regla sin expectativas)');
+title('L bajo shocks de preferencias (Taylor rule sin expectativas)');
 xlabel('L');
 ylabel('Frequencia');
 exportgraphics(fig_histo2, 'histograma2.png', 'Resolution', 300);
 @# endif 
 
 @#if simulboth ==1
-// SIMULACIÓN AMBOS CHOQUES
+// shocks en simultáneo
 
 shocks(overwrite);
 var e_a = 1;
@@ -187,17 +189,18 @@ end;
 //PLOT
 fig_histo3= figure;
 histogram(L_valuesb);
-title('L ante dos choques (regla sin expectativas)');
+title('L bajo shocks simultáneos (Taylor rule sin expectativas)');
 xlabel('L');
 ylabel('Frequencia');
 exportgraphics(fig_histo3, 'histograma3.png', 'Resolution', 300);
 @# endif
 
-
-//REPLICAR TABLA 4.1 
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+//Código fuente para la réplica de la tabla 4.1
 @#if nonsimul == 1
 
-//Choque de tecnología
+//Shock tecnológico
 shocks;
     var e_a =1;
     var e_z = 0;
@@ -223,7 +226,7 @@ for j = 1:length(phis_pi)
     results_tech(3, j) = oo_.var(7,7)^0.5; // Varianza de pi
     results_tech(4, j) = 0.5 * ((M_.params(7,1) + (M_.params(8,1) + M_.params(9,1))/(1 - M_.params(9,1))) * oo_.var(3,3) + M_.params(6,1)/M_.params(13,1) * oo_.var(7,7))/100; // Cálculo de L
 end;
-//Choque de demanda
+//Choque de preferencias
 shocks;
     var e_a = 0;
     var e_z = 1;
@@ -231,7 +234,7 @@ end;
 
 stoch_simul(order=1, irf=0, noprint) y y_tilda pi;
 
-// Loop con cada combinación de parámetros
+// Bucle para todos los parámetros
 for j = 1:length(phis_pi)
     set_param_value('phi_pi', phis_pi(j));
     set_param_value('phi_y', phis_y(j));
@@ -242,10 +245,10 @@ for j = 1:length(phis_pi)
     results_demand(4, j) = 0.5 * ((M_.params(7,1) + (M_.params(8,1) + M_.params(9,1))/(1 - M_.params(9,1))) * oo_.var(3,3) + M_.params(6,1)/M_.params(13,1) * oo_.var(7,7))/100; // Cálculo de L
 end;
 
-// Imprimir resultados
+// Resultados
 fprintf('\n');
 fprintf('----------------------------------------------------- \n');
-fprintf('%-40s \n', "TABLA 4.1.1: Choque tecnológico*");
+fprintf('%-40s \n', "TABLA 4.1.1: Shock tecnológico*");
 fprintf('----------------------------------------------------- \n');
 fprintf('%-8s', 'phi_pi');
 fprintf('%12.1f   ', phis_pi);
@@ -253,7 +256,7 @@ fprintf('\n%-8s', 'phi_y');
 fprintf('%12.3f   ', phis_y);
 fprintf('\n');
 
-// Resultados de choque de tecnología
+// Resultados de shock de tecnología
 variable_names = {'y', 'y_tilda', 'pi', 'L'};
 for i = 1:4
     fprintf('%-8s', variable_names{i});
@@ -264,7 +267,7 @@ end;
 // Imprimir resultados
 fprintf('\n');
 fprintf('----------------------------------------------------- \n');
-fprintf('%-40s \n', "TABLA 4.1.2: Choque de demanda*");
+fprintf('%-40s \n', "TABLA 4.1.2: Shock de preferencias*");
 fprintf('----------------------------------------------------- \n');
 fprintf('%-8s', 'phi_pi');
 fprintf('%12.1f   ', phis_pi);
@@ -272,7 +275,7 @@ fprintf('\n%-8s', 'phi_y');
 fprintf('%12.3f   ', phis_y);
 fprintf('\n');
 
-//  Resultados de choque de demanda
+//  Resultados shock de preferencias
 for i = 1:4
     fprintf('%-8s', variable_names{i});
     fprintf('%12.4f   ', results_demand(i, :));
